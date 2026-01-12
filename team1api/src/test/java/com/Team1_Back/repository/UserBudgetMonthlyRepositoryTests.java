@@ -29,11 +29,11 @@ public class UserBudgetMonthlyRepositoryTests {
 
     /**
      * 사용자별 월간 예산 더미 데이터 생성 (현재 월만)
-     * UserDataInitTest.insertTestUsers() 실행 후 사용
+     * UserRepositoryTests.insertDummyUsers() 실행 후 사용
      * 
      * ⚠️ 사전 요구사항:
-     * - HR 팀원이 UserDataInitTest.insertTestUsers() 먼저 실행해야 함
-     * - 최소 4명의 사용자 (EMP00001, EMP00002, EMP00003, EMP00004) 필요
+     * - HR 팀원이 UserRepositoryTests.insertDummyUsers() 먼저 실행해야 함
+     * - 최소 4명의 사용자 (20250001, 20250002, 20250003, 20250004) 필요
      * 
      * 생성 개수: 10개 (현재 월만, 통계용)
      */
@@ -44,14 +44,14 @@ public class UserBudgetMonthlyRepositoryTests {
         String currentYearMonth = now.format(formatter);
 
         // 필요한 사용자들
-        User user1 = userRepository.findByEmployeeNo("EMP00001")
-                .orElseThrow(() -> new RuntimeException("EMP00001 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
-        User user2 = userRepository.findByEmployeeNo("EMP00002")
-                .orElseThrow(() -> new RuntimeException("EMP00002 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
-        User user3 = userRepository.findByEmployeeNo("EMP00003")
-                .orElseThrow(() -> new RuntimeException("EMP00003 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
-        User user4 = userRepository.findByEmployeeNo("EMP00004")
-                .orElseThrow(() -> new RuntimeException("EMP00004 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
+        User user1 = userRepository.findByEmployeeNo("20250001")
+                .orElseThrow(() -> new RuntimeException("20250001 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
+        User user2 = userRepository.findByEmployeeNo("20250002")
+                .orElseThrow(() -> new RuntimeException("20250002 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
+        User user3 = userRepository.findByEmployeeNo("20250003")
+                .orElseThrow(() -> new RuntimeException("20250003 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
+        User user4 = userRepository.findByEmployeeNo("20250004")
+                .orElseThrow(() -> new RuntimeException("20250004 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
 
         // 현재 월 예산 생성 (통계용)
         // user1: 200만원 (25% 소진율 예정, 예산 초과 주의 인원 아님)
@@ -81,10 +81,10 @@ public class UserBudgetMonthlyRepositoryTests {
         String currentYearMonth = LocalDate.now().format(formatter);
 
         // user1은 제외 (예산 초과 주의 인원 아님)
-        User user2 = userRepository.findByEmployeeNo("EMP00002")
-                .orElseThrow(() -> new RuntimeException("EMP00002 사용자를 찾을 수 없습니다."));
-        User user3 = userRepository.findByEmployeeNo("EMP00003")
-                .orElseThrow(() -> new RuntimeException("EMP00003 사용자를 찾을 수 없습니다."));
+        User user2 = userRepository.findByEmployeeNo("20250002")
+                .orElseThrow(() -> new RuntimeException("20250002 사용자를 찾을 수 없습니다."));
+        User user3 = userRepository.findByEmployeeNo("20250003")
+                .orElseThrow(() -> new RuntimeException("20250003 사용자를 찾을 수 없습니다."));
 
         // user2: 목표 85% 소진율 (예산 초과 주의)
         updateBudgetForUser(user2, currentYearMonth, 0.85);

@@ -29,19 +29,11 @@
     .dashboard-todo-row {
         gap: 20px;
     }
-
-    .dashboard-todo-panel {
-        min-height: 380px;
-    }
 }
 
 @media (max-width: 992px) {
     .dashboard-todo-row {
         gap: 16px;
-    }
-
-    .dashboard-todo-panel {
-        min-height: 360px;
     }
 }
 
@@ -49,28 +41,16 @@
     .dashboard-todo-row {
         flex-direction: column;
         gap: 16px;
-        margin-bottom: 20px;
     }
 
     .dashboard-todo-panel {
         min-height: auto;
         width: 100%;
     }
-
-    /* 모바일에서는 hover 효과 제거 */
-    .dashboard-todo-panel:hover {
-        transform: none;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    }
 }
 
 @media (max-width: 480px) {
     .dashboard-todo-row {
         gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .dashboard-todo-panel {
-        min-height: auto;
     }
 }

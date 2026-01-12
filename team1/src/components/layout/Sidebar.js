@@ -35,7 +35,7 @@ const subItemStyle = {
     alignItems: "center",
 };
 
-export default function Sidebar({ isOpen = false, onClose }) {
+export default function Sidebar() {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -93,17 +93,6 @@ export default function Sidebar({ isOpen = false, onClose }) {
     const handleStandaloneClick = (path) => {
         setOpenMenu({purchase: false, inventory: false});
         navigate(path);
-        // 모바일에서 메뉴 클릭 시 사이드바 닫기
-        if (onClose) {
-            onClose();
-        }
-    };
-
-    const handleNavClick = (path) => {
-        navigate(path);
-        if (onClose) {
-            onClose();
-        }
     };
 
     const getNavItemClass = (path) => {
@@ -111,13 +100,10 @@ export default function Sidebar({ isOpen = false, onClose }) {
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
+        <aside className="sidebar">
             <div
                 className="sidebar-logo"
-                onClick={() => {
-                    navigate("/dashboard");
-                    if (onClose) onClose();
-                }}
+                onClick={() => navigate("/dashboard")}
                 style={{ cursor: "pointer" }} // 마우스 오버 시 손가락 모양 표시
             >
                 SmartSpend
@@ -147,10 +133,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                 {/* 1. [공통] 메인 메뉴 */}
                 <div
                     className={`nav-item ${location.pathname === "/dashboard" ? "active" : ""}`}
-                    onClick={() => {
-                        navigate("/dashboard");
-                        if (onClose) onClose();
-                    }}
+                    onClick={() => navigate("/dashboard")}
                 >
                     <span style={{marginRight: "10px"}}>🏠</span> Home
                 </div>
@@ -189,7 +172,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                     >
                         <div
                             className={getNavItemClass("/shop")}
-                            onClick={() => handleNavClick("/shop")}
+                            onClick={() => navigate("/shop")}
                             style={{
                                 ...subItemStyle,
                                 // 현재 경로가 /shop이면 흰색(#ffffff), 아니면 기존 색상(#555)
@@ -201,7 +184,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                         </div>
                         <div
                             className={getNavItemClass("/history")}
-                            onClick={() => handleNavClick("/history")}
+                            onClick={() => navigate("/history")}
                             style={{
                                 ...subItemStyle,
                                 // 현재 경로가 /shop이면 흰색(#ffffff), 아니면 기존 색상(#555)
@@ -218,7 +201,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                     className={`nav-item ${
                         location.pathname === "/tasks" ? "active" : ""
                     }`}
-                    onClick={() => handleNavClick("/tasks")}
+                    onClick={() => navigate("/tasks")}
                 >
                     <span style={{marginRight: "10px"}}>📁</span> 업무보드
                 </div>
@@ -227,7 +210,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                     className={`nav-item ${
                         location.pathname === "/mypage" ? "active" : ""
                     }`}
-                    onClick={() => handleNavClick("/mypage")}
+                    onClick={() => navigate("/mypage")}
                 >
                     <span style={{marginRight: "10px"}}>👤</span> 마이페이지
                 </div>
@@ -236,7 +219,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                     className={`nav-item ${
                         location.pathname === "/expenses" ? "active" : ""
                     }`}
-                    onClick={() => handleNavClick("/expenses")}
+                    onClick={() => navigate("/expenses")}
                 >
                     <span style={{marginRight: "10px"}}>💰</span> 내 지출 내역
                 </div>
@@ -252,7 +235,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                             className={`nav-item ${
                                 location.pathname === "/admin/hr" ? "active" : ""
                             }`}
-                            onClick={() => handleNavClick("/admin/hr")}
+                            onClick={() => navigate("/admin/hr")}
                         >
                             <span style={{ marginRight: "10px" }}>👥</span> 사원관리
                         </div>
@@ -260,7 +243,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                             className={`nav-item ${
                                 location.pathname === "/admin/attendance" ? "active" : ""
                             }`}
-                            onClick={() => handleNavClick("/admin/attendance")}
+                            onClick={() => navigate("/admin/attendance")}
                         >
                             <span style={{ marginRight: "10px" }}>📅</span> 출결관리
                         </div>
@@ -269,7 +252,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                             className={`nav-item ${
                                 location.pathname === "/admin/approval" ? "active" : ""
                             }`}
-                            onClick={() => handleNavClick("/admin/approval")}
+                            onClick={() => navigate("/admin/approval")}
                         >
                             <span style={{marginRight: "10px"}}>📑</span> 결재관리
                         </div>
@@ -299,7 +282,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                             >
                                 <div
                                     className={getNavItemClass("/admin/shop")}
-                                    onClick={() => handleNavClick("/admin/shop")}
+                                    onClick={() => navigate("/admin/shop")}
                                     style={{
                                         ...subItemStyle,
                                         // 현재 경로가 /shop이면 흰색(#ffffff), 아니면 기존 색상(#555)
@@ -314,7 +297,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                                 {/* 👇 [추가됨] 상품 승인 관리 메뉴 */}
                                 <div
                                     className={getNavItemClass("/admin/product-approval")}
-                                    onClick={() => handleNavClick("/admin/product-approval")}
+                                    onClick={() => navigate("/admin/product-approval")}
                                     style={{
                                         ...subItemStyle,
                                         // 현재 경로가 /shop이면 흰색(#ffffff), 아니면 기존 색상(#555)
@@ -333,7 +316,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
                             className={`nav-item ${
                                 location.pathname === "/admin/accounting" ? "active" : ""
                             }`}
-                            onClick={() => handleNavClick("/admin/accounting")}
+                            onClick={() => navigate("/admin/accounting")}
                         >
                             <span style={{marginRight: "10px"}}>📊</span> 회계통계
                         </div>

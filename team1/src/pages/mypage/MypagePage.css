@@ -13,26 +13,26 @@
 }
 
 /* 페이지 상단 메타/타이틀 */
-.page-meta {
+.mypage-wrapper .page-meta {
   font-size: 12px;
   color: #94a3b8;
   margin-bottom: 4px;
   font-weight: 500;
 }
 
-.page-title {
+.mypage-wrapper .page-title {
   font-size: 28px;
   font-weight: 700;
   color: #1e293b;
   margin: 0 0 24px 0;
 }
 
-/* 메인 컨텐츠 (좌우 배치) */
+/* 메인 컨텐츠 (좌우 배치) - 동일한 너비 */
 .mypage-content {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* 왼쪽 영역 */
@@ -49,8 +49,18 @@
   gap: 20px;
 }
 
+/* 내정보 카드 - 남은 공간 채우기 */
+.mypage-wrapper .mypage-left .info-card {
+  flex: 1;
+}
+
+/* 달력 카드 - 내정보와 높이 맞춤 */
+.mypage-wrapper .mypage-right .calendar-card {
+  flex: 1;
+}
+
 /* ===== 공통 패널 스타일 ===== */
-.panel {
+.mypage-wrapper .panel {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -62,10 +72,12 @@
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 /* ===== 내정보 카드 ===== */
-.info-card {
+.mypage-wrapper .info-card {
   padding: 24px;
 }
 
@@ -84,89 +96,21 @@
 
 .mypage-wrapper .info-value {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: #1e293b;
-}
-
-/* ===== [수정됨] 출결현황 카드 (Progress Bar 스타일) ===== */
-.chart-card {
-  padding: 24px;
-}
-
-.chart-card .section-title {
-  margin-bottom: 20px;
-}
-
-.chart-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.chart-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-}
-
-/* 1. 라벨 */
-.chart-label {
-  width: 40px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #64748b;
-  flex-shrink: 0;
-}
-
-/* 2. 막대 배경 (트랙) - 남은 공간 차지 */
-.chart-track {
-  flex: 1;
-  height: 12px;
-  background-color: #f1f5f9;
+  padding: 10px 14px;
+  background: #f8fafc;
   border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-/* 3. 실제 색상 막대 */
-.chart-indicator {
-  height: 100%;
-  border-radius: 6px;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 4px; /* 최소 너비 */
-}
-
-.chart-indicator.present {
-  background: #22c55e;
-}
-.chart-indicator.late {
-  background: #f59e0b;
-}
-.chart-indicator.absent {
-  background: #ef4444;
-}
-.chart-indicator.leave {
-  background: #3b82f6;
-}
-
-/* 4. 횟수 값 */
-.chart-value {
-  width: 40px;
-  text-align: right;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e293b;
-  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
 }
 
 /* ===== 출퇴근 버튼 ===== */
-.check-buttons {
+.mypage-wrapper .check-buttons {
   display: flex;
   gap: 16px;
 }
 
-.check-btn {
+.mypage-wrapper .check-btn {
   flex: 1;
   padding: 16px;
   font-size: 15px;
@@ -177,53 +121,87 @@
   transition: all 0.2s;
 }
 
-.check-btn.check-in {
-  background: #e2e8f0;
-  color: #64748b;
+/* 출근 버튼 - 활성화 시 파란색 */
+.mypage-wrapper .check-btn.check-in:not(:disabled) {
+  background: #3b82f6;
+  color: #ffffff;
 }
 
-.check-btn.check-in:hover:not(:disabled) {
-  background: #cbd5e1;
+.mypage-wrapper .check-btn.check-in:hover:not(:disabled) {
+  background: #2563eb;
 }
 
-.check-btn.check-out {
-  background: #e2e8f0;
-  color: #64748b;
+/* 퇴근 버튼 - 활성화 시 빨간색 */
+.mypage-wrapper .check-btn.check-out:not(:disabled) {
+  background: #ef4444;
+  color: #ffffff;
 }
 
-.check-btn.check-out:hover:not(:disabled) {
-  background: #cbd5e1;
+.mypage-wrapper .check-btn.check-out:hover:not(:disabled) {
+  background: #dc2626;
 }
 
-.check-btn:disabled {
+/* 비활성화 버튼 - 회색 */
+.mypage-wrapper .check-btn:disabled {
   background: #f1f5f9;
   color: #94a3b8;
   cursor: not-allowed;
 }
 
 /* ===== 달력 카드 ===== */
-.calendar-card {
-  padding: 24px;
+.mypage-wrapper .calendar-card {
+  padding: 24px 24px 32px 24px;
 }
 
-.calendar-card .section-title {
+/* 달력 헤더 (타이틀 + 오늘 버튼) */
+.mypage-wrapper .calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.mypage-wrapper .calendar-header .section-title {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 오늘 버튼 */
+.mypage-wrapper .today-btn {
+  position: absolute;
+  right: 0;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3b82f6;
+  background: #ffffff;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mypage-wrapper .today-btn:hover {
+  background: #3b82f6;
+  color: #ffffff;
 }
 
 /* React Calendar 커스텀 */
-.calendar-card .react-calendar {
+.mypage-wrapper .calendar-card .react-calendar {
   width: 100%;
   border: none;
   font-family: inherit;
   background: transparent;
 }
 
-.calendar-card .react-calendar__navigation {
+.mypage-wrapper .calendar-card .react-calendar__navigation {
   margin-bottom: 16px;
 }
 
-.calendar-card .react-calendar__navigation button {
+.mypage-wrapper .calendar-card .react-calendar__navigation button {
   font-size: 14px;
   font-weight: 600;
   color: #475569;
@@ -233,16 +211,16 @@
   border-radius: 6px;
 }
 
-.calendar-card .react-calendar__navigation button:hover {
+.mypage-wrapper .calendar-card .react-calendar__navigation button:hover {
   background: #f1f5f9;
 }
 
-.calendar-card .react-calendar__navigation button:disabled {
+.mypage-wrapper .calendar-card .react-calendar__navigation button:disabled {
   background: transparent;
   color: #cbd5e1;
 }
 
-.calendar-card .react-calendar__month-view__weekdays {
+.mypage-wrapper .calendar-card .react-calendar__month-view__weekdays {
   text-align: center;
   font-size: 12px;
   font-weight: 600;
@@ -251,118 +229,127 @@
   margin-bottom: 8px;
 }
 
-.calendar-card .react-calendar__month-view__weekdays__weekday {
+.mypage-wrapper .calendar-card .react-calendar__month-view__weekdays__weekday {
   padding: 8px 0;
 }
 
-.calendar-card .react-calendar__month-view__weekdays__weekday abbr {
+.mypage-wrapper
+  .calendar-card
+  .react-calendar__month-view__weekdays__weekday
+  abbr {
   text-decoration: none;
 }
 
 /* 일요일 빨간색 */
-.calendar-card .react-calendar__month-view__weekdays__weekday:first-child {
+.mypage-wrapper
+  .calendar-card
+  .react-calendar__month-view__weekdays__weekday:first-child {
   color: #ef4444;
 }
 
 /* 토요일 파란색 */
-.calendar-card .react-calendar__month-view__weekdays__weekday:last-child {
+.mypage-wrapper
+  .calendar-card
+  .react-calendar__month-view__weekdays__weekday:last-child {
   color: #3b82f6;
 }
 
-.calendar-card .react-calendar__tile {
-  padding: 12px 8px;
+.mypage-wrapper .calendar-card .react-calendar__tile {
+  padding: 14px 8px;
   font-size: 14px;
   font-weight: 500;
   color: #475569;
   background: none;
-  border-radius: 8px;
+  border-radius: 6px;
   position: relative;
 }
 
-.calendar-card .react-calendar__tile:hover {
+.mypage-wrapper .calendar-card .react-calendar__tile:hover {
   background: #f1f5f9;
 }
 
-.calendar-card .react-calendar__tile--now {
+.mypage-wrapper .calendar-card .react-calendar__tile--now {
   background: #e0f2fe;
   color: #0284c7;
   font-weight: 700;
 }
 
-.calendar-card .react-calendar__tile--active {
+.mypage-wrapper .calendar-card .react-calendar__tile--active {
   background: #3b82f6;
   color: white;
 }
 
-.calendar-card .react-calendar__tile--active:hover {
+.mypage-wrapper .calendar-card .react-calendar__tile--active:hover {
   background: #2563eb;
 }
 
 /* 이웃 달 날짜 스타일 */
-.calendar-card .react-calendar__month-view__days__day--neighboringMonth {
+.mypage-wrapper
+  .calendar-card
+  .react-calendar__month-view__days__day--neighboringMonth {
   color: #cbd5e1;
 }
 
 /* 출결 상태별 타일 스타일 */
-.calendar-card .react-calendar__tile.present::after {
+.mypage-wrapper .calendar-card .react-calendar__tile.present::after {
   content: "";
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #22c55e;
 }
 
-.calendar-card .react-calendar__tile.late::after {
+.mypage-wrapper .calendar-card .react-calendar__tile.late::after {
   content: "";
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #f59e0b;
 }
 
-.calendar-card .react-calendar__tile.absent::after {
+.mypage-wrapper .calendar-card .react-calendar__tile.absent::after {
   content: "";
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #ef4444;
 }
 
-.calendar-card .react-calendar__tile.leave::after {
+.mypage-wrapper .calendar-card .react-calendar__tile.leave::after {
   content: "";
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #3b82f6;
 }
 
 /* 달력 범례 */
-.calendar-legend {
+.mypage-wrapper .calendar-legend {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 16px;
+  margin-top: 24px;
   padding-top: 16px;
   border-top: 1px solid #e2e8f0;
 }
 
-.legend-item {
+.mypage-wrapper .legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -370,26 +357,95 @@
   color: #64748b;
 }
 
-.legend-dot {
+.mypage-wrapper .legend-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
 }
 
-.legend-dot.present {
+.mypage-wrapper .legend-dot.present {
   background: #22c55e;
 }
 
-.legend-dot.late {
+.mypage-wrapper .legend-dot.late {
   background: #f59e0b;
 }
 
-.legend-dot.absent {
+.mypage-wrapper .legend-dot.absent {
   background: #ef4444;
 }
 
-.legend-dot.leave {
+.mypage-wrapper .legend-dot.leave {
   background: #3b82f6;
+}
+
+/* ===== 출결현황 카드 (막대그래프) ===== */
+.mypage-wrapper .chart-card {
+  padding: 20px 24px;
+}
+
+.mypage-wrapper .chart-card .section-title {
+  margin-bottom: 20px;
+}
+
+.mypage-wrapper .chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mypage-wrapper .chart-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mypage-wrapper .chart-label {
+  width: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.mypage-wrapper .chart-bar-wrapper {
+  flex: 1;
+  height: 24px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mypage-wrapper .chart-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  min-width: 4px;
+}
+
+.mypage-wrapper .chart-bar.present {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.mypage-wrapper .chart-bar.late {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.mypage-wrapper .chart-bar.absent {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.mypage-wrapper .chart-bar.leave {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.mypage-wrapper .chart-value {
+  width: 40px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 /* ===== 반응형 ===== */

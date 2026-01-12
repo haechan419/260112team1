@@ -103,11 +103,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-
-                        // Face ID 로그인
-                        .requestMatchers("/api/face/**").permitAll()
-
-                        // ✅ 관리자 전용
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/reports/**").authenticated()
                         .anyRequest().permitAll()

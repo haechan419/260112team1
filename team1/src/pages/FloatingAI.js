@@ -66,7 +66,7 @@ async function performanceAiRequest(prompt) {
 
 /**
  * 출결 관련 키워드 체크
- * ⭐ 우선순위 높음 - 이 키워드가 있으면 무조건 출결 API로!
+ * 이 키워드가 포함되면 Python 서버로 요청
  */
 function isAttendanceQuery(prompt) {
   const keywords = [
@@ -102,7 +102,8 @@ function isPerformanceQuery(prompt) {
     "1위",
     "최고",
     "제일",
-    // "부서", "팀" 제거 (출결 키워드와 겹침)
+    "부서",
+    "팀",
     "작년",
     "전년",
     "성장",
@@ -134,6 +135,9 @@ export default function FloatingAI() {
     chartImage: "", // Base64 그래프 이미지
   });
 
+  // ====== 위치(드래그) 관련 ======
+  // 드래그 관련 상태 제거 (Topbar 고정 버튼 사용)
+
   // ====== UX: 열릴 때 포커스 ======
   useEffect(() => {
     if (open) {
@@ -156,9 +160,11 @@ export default function FloatingAI() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [imageModal, setOpen]);
+  }, [imageModal]);
 
-  // ====== AI 실행 (핵심 로직) - ⭐ 우선순위 수정! ======
+  // 위치/드래그 로직 제거 (Topbar 고정 버튼 사용)
+
+  // ====== AI 실행 (핵심 로직) ======
   const onRun = async () => {
     const p = prompt.trim();
     if (!p) return;
@@ -175,27 +181,8 @@ export default function FloatingAI() {
     });
 
     try {
-      // ⭐⭐⭐ 출결 관련 질문이 최우선! ⭐⭐⭐
-      if (isAttendanceQuery(p)) {
-        // ★ Python 출결 AI 서버 호출
-        console.log("[AI] 출결 관련 질문 → Python 서버로 요청");
-        const data = await attendanceAiRequest(p);
-
-        if (data.ok) {
-          setResponse({
-            message: data.message || "",
-            summary: data.summary || "",
-            hasFile: data.hasFile || false,
-            downloadUrl: data.downloadUrl || "",
-            fileName: data.fileName || "",
-            chartImage: "",
-          });
-        } else {
-          setErr(data.message || "처리 실패");
-        }
-      }
-      // 부서 실적 관련 질문인지 확인
-      else if (isPerformanceQuery(p)) {
+      // 부서 실적 관련 질문인지 확인 (우선 체크)
+      if (isPerformanceQuery(p)) {
         // ★ Python 부서 실적 AI 서버 호출
         console.log("[AI] 실적 관련 질문 → Python 서버로 요청");
         const data = await performanceAiRequest(p);
@@ -208,6 +195,25 @@ export default function FloatingAI() {
             downloadUrl: "",
             fileName: "",
             chartImage: data.chartImage || "",
+          });
+        } else {
+          setErr(data.message || "처리 실패");
+        }
+      }
+      // 출결 관련 질문인지 확인
+      else if (isAttendanceQuery(p)) {
+        // ★ Python 출결 AI 서버 호출
+        console.log("[AI] 출결 관련 질문 → Python 서버로 요청");
+        const data = await attendanceAiRequest(p);
+
+        if (data.ok) {
+          setResponse({
+            message: data.message || "",
+            summary: data.summary || "",
+            hasFile: data.hasFile || false,
+            downloadUrl: data.downloadUrl || "",
+            fileName: data.fileName || "",
+            chartImage: "",
           });
         } else {
           setErr(data.message || "처리 실패");
@@ -293,7 +299,7 @@ export default function FloatingAI() {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="예) 개발1팀 2025년 8월 출결 뽑아줘"
+                placeholder="예) 개발1팀 개발2팀 실적 비교해줘"
               />
 
               {/* 버튼들 */}
