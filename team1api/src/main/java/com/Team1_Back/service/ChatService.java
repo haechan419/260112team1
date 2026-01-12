@@ -1,16 +1,17 @@
 package com.Team1_Back.service;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.Team1_Back.domain.ChatMessage;
 import com.Team1_Back.domain.ChatRoom;
 import com.Team1_Back.domain.ChatRoomMember;
 import com.Team1_Back.domain.ChatRoomMemberId;
+import com.Team1_Back.dto.ChatAttachmentDto;
 import com.Team1_Back.dto.ChatMessageResponse;
 import com.Team1_Back.dto.ChatRoomMetaResponse;
 import com.Team1_Back.repository.ChatMessageRepository;
 import com.Team1_Back.repository.ChatRoomMemberRepository;
 import com.Team1_Back.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public class ChatService {
     private final ChatRoomRepository roomRepo;
     private final ChatRoomMemberRepository memberRepo;
     private final ChatMessageRepository messageRepo;
+    private  final ChatRoomSecurityService chatRoomSecurityService;
+    private final ChatMessageRepository chatMessageRepository;
 
     private final ChatRoomMemberRepository chatRoomMemberRepository;
 
@@ -49,6 +52,7 @@ public class ChatService {
             ChatRoom r = new ChatRoom();
             r.setType("DIRECT");     // 너 규칙 유지
             r.setDirectKey(key);
+            r.setCreatedAt(LocalDateTime.now());
             return roomRepo.save(r);
         });
 
@@ -105,7 +109,7 @@ public class ChatService {
             memberRepo.save(m);
         });
 
-        return new ChatMessageResponse(savedId, roomId, senderId, saved.getContent(), saved.getCreatedAt());
+        return new ChatMessageResponse(savedId, roomId, senderId, saved.getContent(), saved.getCreatedAt(),List.of() );
     }
 
     public void broadcastRoomsChanged(Long roomId) {
@@ -154,14 +158,24 @@ public class ChatService {
     // =========================
     // MESSAGES PAGE
     // =========================
+    @Transactional(readOnly = true)
     public List<ChatMessageResponse> getMessages(Long roomId, Long meId, Long cursor, int limit) {
         assertMember(roomId, meId);
 
-        List<ChatMessage> list = messageRepo.findPage(roomId, cursor);
-        return list.stream()
-                .limit(Math.max(1, Math.min(limit, 50)))
-                .map(m -> new ChatMessageResponse(m.getId(), m.getRoomId(), m.getSenderId(), m.getContent(), m.getCreatedAt()))
-                .toList();
+        int size = Math.max(1, Math.min(limit, 50));
+
+        // 1) 페이지에 해당하는 messageId만 먼저 가져오기
+        List<Long> ids = messageRepo.findPageIds(roomId, cursor, size);
+        if (ids.isEmpty()) return List.of();
+
+        // 2) attachments까지 join fetch로 가져오기
+        List<ChatMessage> list = messageRepo.findByIdInWithAttachments(ids);
+
+        // 3) IN 조회는 순서 보장 X → id desc로 정렬 맞추기
+        list.sort((a, b) -> Long.compare(b.getId(), a.getId()));
+
+        // 4) 반드시 toResponse로 attachments 포함 변환
+        return list.stream().map(this::toResponse).toList();
     }
 
     // =========================
@@ -188,6 +202,29 @@ public class ChatService {
 
         // ✅ JPA면 save() 없어도 됨 (m이 영속 상태)
         // memberRepo.save(m);
+    }
+    private ChatMessageResponse toResponse(ChatMessage m) {
+        return ChatMessageResponse.builder()
+                .messageId(m.getId())
+                .roomId(m.getRoomId())
+                .senderId(m.getSenderId())
+                .content(m.getContent())
+                .createdAt(m.getCreatedAt())
+                .attachments(
+                        m.getAttachments() == null
+                                ? List.of()
+                                : m.getAttachments().stream()
+                                .map(att -> ChatAttachmentDto.builder()
+                                        .attachmentId(att.getId())
+                                        .originalName(att.getOriginalName())
+                                        .mimeType(att.getMimeType())
+                                        .size(att.getFileSize())
+//                                        .url(att.getFileUrl())
+                                        .build()
+                                )
+                                .toList()
+                )
+                .build();
     }
 
 
@@ -220,6 +257,21 @@ public class ChatService {
             insertMemberIfAbsent(roomId, uid);
         }
     }
+
+    @Transactional
+    public List<ChatMessageResponse> getMessages(Long roomId, Long meId, int limit) {
+        chatRoomSecurityService.assertMember(meId, roomId);
+
+        List<Long> ids = chatMessageRepository.findRecentIds(roomId, limit);
+        if (ids.isEmpty()) return List.of();
+
+        List<ChatMessage> list = chatMessageRepository.findByIdInWithAttachments(ids);
+
+        return list.stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
 
 
 

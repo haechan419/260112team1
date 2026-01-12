@@ -1,19 +1,25 @@
 package com.Team1_Back.controller;
 
+import com.Team1_Back.dto.AiChatFileResponse;
 import com.Team1_Back.dto.AiContextRequest;
 import com.Team1_Back.dto.AiContextResponse;
+import com.Team1_Back.service.AiChatFileService;
 import com.Team1_Back.service.AiContextService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/ai")
 @RequiredArgsConstructor
 public class AiContextController {
 
     private final AiContextService aiContextService;
+    private final AiChatFileService aiChatFileService;
 
     @PostMapping("/find-context")
     public AiContextResponse findContext(@RequestBody(required = false) AiContextRequest request) {
@@ -33,18 +39,18 @@ public class AiContextController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "query is required");
         }
 
-        // ✅ (선택) 여기에 권한 체크 붙이는 자리:
-        // - 현재 로그인 유저가 roomId 멤버인지 검사
-        // - 아니면 403
-        // authService.assertRoomMember(roomId);
-
         try {
             return aiContextService.findContext(roomId, query.trim());
+
+        } catch (AccessDeniedException e) {
+            log.warn("[AI-CONTEXT] ACCESS DENIED roomId={} msg={}", roomId, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage(), e);
+
         } catch (IllegalArgumentException e) {
-            // 서비스에서 검증 에러 던질 경우
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
         } catch (Exception e) {
-            // LLM API 실패/파싱 실패 등
+            log.error("[AI-CONTEXT] FAILED roomId={} query='{}'", roomId, query, e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "AI context failed", e);
         }
     }
@@ -64,11 +70,53 @@ public class AiContextController {
 
         try {
             return aiContextService.findContextGlobal(query.trim());
+
+        } catch (AccessDeniedException e) {
+            log.warn("[AI-CONTEXT-G] ACCESS DENIED msg={}", e.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
+
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
         } catch (Exception e) {
+            log.error("[AI-CONTEXT-G] FAILED query='{}'", query, e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "AI context failed", e);
         }
     }
 
+    @PostMapping("/find-chat-files-global")
+    public AiChatFileResponse findChatFilesGlobal(@RequestBody(required = false) AiContextRequest req) {
+
+        if (req == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "request body is required");
+        }
+
+        String q = req.getQuery();
+        if (q == null || q.trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "query is required");
+        }
+
+        try {
+            return aiChatFileService.findChatFilesGlobal(q.trim());
+
+        } catch (AccessDeniedException e) {
+            // ✅ 인증/권한 예외를 500으로 뭉개지 않기
+            // 서비스에서 "UNAUTHORIZED" 던지면 401로
+            String msg = (e.getMessage() == null) ? "UNAUTHORIZED" : e.getMessage();
+            HttpStatus status = msg.toUpperCase().contains("UNAUTHORIZED")
+                    ? HttpStatus.UNAUTHORIZED
+                    : HttpStatus.FORBIDDEN;
+
+            log.warn("[AI-CHAT-FILE] ACCESS DENIED q='{}' msg={}", q, msg);
+            throw new ResponseStatusException(status, msg, e);
+
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
+        } catch (Exception e) {
+            // ✅ 원인 스택 반드시 남겨야 다음에 바로 잡힘
+            log.error("[AI-CHAT-FILE] FAILED q='{}'", q, e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "AI chat file failed", e);
+        }
+    }
 }

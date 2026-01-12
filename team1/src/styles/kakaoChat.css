@@ -5,6 +5,17 @@
     font-size: 13px;
 }
 
+.chatPanelShell{
+    display: flex;
+    height: 100%;
+    min-height: 0;
+}
+
+.chatPanelLeft{
+    display: flex;
+    flex-direction: column;
+    min-height: 0;     /* ✅ RoomList 스크롤 먹게 */
+}
 /* ===== 좌측 방 목록 ===== */
 .kcRoomList{
     display:flex;
@@ -77,6 +88,21 @@
     padding: 18px 18px 14px 18px;
     background: #F5F7FB;
 }
+
+/* 3) 우측(헤더 + 메시지/입력) */
+.chatPanelRight{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;      /* ✅ 여기서 높이 확정 */
+    min-height: 0;     /* ✅ 메시지영역 overflow 먹게 */
+}
+
+.chatPanelTop{
+    flex-shrink: 0;
+}
+
+
 
 .kcDateChip{
     width: fit-content;
@@ -350,7 +376,21 @@
     cursor: not-allowed;
     opacity: 0.4;
 }
+.kcChatCol{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;     /* ⭐ 핵심 */
+}
 
+/* 7) 메시지 영역만 스크롤 */
+.kcMsgArea{
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;     /* ⭐ 핵심 */
+}
 
-
-
+/* 8) 입력바는 절대 안 밀리게 */
+.kcInputBar{
+    flex-shrink: 0;
+}

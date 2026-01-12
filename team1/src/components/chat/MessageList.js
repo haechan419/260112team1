@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { getCookie } from "../../util/cookieUtil";
 import { decodeJwtPayload } from "../../util/jwtDecode";
 import "../../styles/kakaoChat.css";
+import { downloadChatAttachment } from "../../api/chatApi"; // ✅ 1순위: API 레이어
 
 function toKoreanDate(d) {
     const y = d.getFullYear();
@@ -60,6 +61,11 @@ function isImageMime(mime = "") {
 
 export default function MessageList({ messages, otherLastReadMessageId }) {
     const bottomRef = useRef(null);
+
+    const token = useMemo(() => {
+        const member = getCookie("member");
+        return member?.accessToken ?? null;
+    }, []);
 
     const meId = useMemo(() => {
         const member = getCookie("member");
@@ -130,11 +136,7 @@ export default function MessageList({ messages, otherLastReadMessageId }) {
 
                         <div className="kcBubbleWrap">
                             {/* ✅ 1) 텍스트 버블: content 있을 때만 표시 */}
-                            {hasText && (
-                                <div className={`kcBubble ${mine ? "me" : "other"}`}>
-                                    {text}
-                                </div>
-                            )}
+                            {hasText && <div className={`kcBubble ${mine ? "me" : "other"}`}>{text}</div>}
 
                             {/* ✅ 2) 첨부파일 카드들 */}
                             {hasAtt && (
@@ -144,24 +146,20 @@ export default function MessageList({ messages, otherLastReadMessageId }) {
                                         const name = a.originalName ?? "file";
                                         const mime = a.mimeType ?? "";
                                         const size = a.size ?? a.fileSize ?? null;
-                                        const url = a.url ?? a.fileUrl ?? "";
 
-                                        // 이미지면 미리보기(선택) + 다운로드
                                         const img = isImageMime(mime);
 
                                         return (
-                                            <a
+                                            // ✅ a태그(새탭/href) 제거: Authorization 없는 요청이 나가서 SPA index.html/401 HTML 등으로 꼬일 수 있음
+                                            <div
                                                 key={`att-${id}-${attId}`}
                                                 className={`kcAttCard ${mine ? "me" : "other"}`}
-                                                href={url}
-                                                target="_blank"
-                                                rel="noreferrer"
                                                 title={name}
+                                                role="group"
                                             >
                                                 {img ? (
-                                                    <div className="kcAttThumb">
-                                                        <img src={url} alt={name} />
-                                                    </div>
+                                                    // ✅ 보호 리소스면 img src로 미리보기는 안됨(Authorization 못 붙임) → 일단 아이콘 처리
+                                                    <div className="kcAttIcon">🖼️</div>
                                                 ) : (
                                                     <div className="kcAttIcon">📎</div>
                                                 )}
@@ -174,8 +172,23 @@ export default function MessageList({ messages, otherLastReadMessageId }) {
                                                     </div>
                                                 </div>
 
-                                                <div className="kcAttAction">다운로드</div>
-                                            </a>
+                                                <button
+                                                    type="button"
+                                                    className="kcAttAction"
+                                                    onClick={async (e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        try {
+                                                            await downloadChatAttachment(attId, name, token);
+                                                        } catch (err) {
+                                                            console.error(err);
+                                                            alert("다운로드 실패");
+                                                        }
+                                                    }}
+                                                >
+                                                    다운로드
+                                                </button>
+                                            </div>
                                         );
                                     })}
                                 </div>

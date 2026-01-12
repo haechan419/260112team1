@@ -1,7 +1,5 @@
 package com.Team1_Back.config;
 
-import java.util.List;
-
 import com.Team1_Back.security.filter.JWTCheckFilter;
 import com.Team1_Back.security.handler.APILoginFailHandler;
 import com.Team1_Back.security.handler.APILoginSuccessHandler;
@@ -27,6 +25,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
+import java.util.List;
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
@@ -53,58 +54,63 @@ public class SecurityConfig {
     @Order(HIGHEST_PRECEDENCE)
     public CorsConfigurationSource corsConfigurationSource() {
 
-        //  1) 기존 정책 (API용) - 너가 원한대로 그대로 유지
-        CorsConfiguration apiConfig = new CorsConfiguration();
-        apiConfig.setAllowedOrigins(List.of("http://localhost:3000"));
-        apiConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        apiConfig.setAllowedHeaders(List.of(
+        // ===== 1) API용 CORS =====
+        CorsConfiguration api = new CorsConfiguration();
+        api.setAllowedOrigins(List.of("http://localhost:3000"));
+        api.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        api.setAllowedHeaders(List.of(
                 "Content-Type",
                 "Authorization",
                 "Cache-Control",
                 "X-User-Id",
                 "X-Role",
-                "X-Dept"));
-        apiConfig.setExposedHeaders(List.of("Content-Disposition"));
-        apiConfig.setAllowCredentials(false); // ✅ 그대로 유지
+                "X-Dept"
+        ));
+        api.setExposedHeaders(List.of("Content-Disposition"));
+        api.setAllowCredentials(false); // ✅ JWT 헤더 방식이면 false가 안전
 
-        //  2) SockJS(WebSocket) 전용 정책 - 여기만 credentials 허용
-        CorsConfiguration wsConfig = new CorsConfiguration();
-        wsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
-        wsConfig.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
-
-        // SockJS가 /info 등에서 여러 헤더를 쓸 수 있어서
-        // 최소한 Authorization은 포함, 나머지는 필요하면 추가
-        wsConfig.setAllowedHeaders(List.of("Content-Type", "Authorization"));
-        wsConfig.setAllowCredentials(true); // ✅ 여기만 true
+        // ===== 2) WS/SockJS용 CORS =====
+        // ⚠️ WS도 JWT 헤더 방식이면 credentials=false가 안전
+        CorsConfiguration ws = new CorsConfiguration();
+        ws.setAllowedOrigins(List.of("http://localhost:3000"));
+        ws.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+        ws.setAllowedHeaders(List.of("Content-Type", "Authorization"));
+        ws.setExposedHeaders(List.of("Content-Disposition"));
+        ws.setAllowCredentials(true); // ✅ true로 안 켬
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        //  더 구체적인 /ws-chat/** 를 먼저 등록 (우선 적용)
-        source.registerCorsConfiguration("/ws-chat/**", wsConfig);
-
-        //  나머지는 기존 정책 적용
-        source.registerCorsConfiguration("/**", apiConfig);
+        // ✅ ws가 더 구체적이니까 먼저
+        source.registerCorsConfiguration("/ws-chat/**", ws);
+        // ✅ 나머지
+        source.registerCorsConfiguration("/**", api);
 
         return source;
     }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        log.info("--------------------- security config (JWT + API no-redirect) ---------------------");
 
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // ✅ 여기 딱 1번만
+                // ✅ JWT 필터는 딱 1번만
                 .addFilterBefore(jwtCheckFilter(), UsernamePasswordAuthenticationFilter.class)
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // ✅ WS는 "무시(ignoring)"가 아니라 "열어주기(permitAll)"로
+                        .requestMatchers("/ws-chat/**").permitAll()
+
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/reports/**").authenticated()
+
+                        // 여기서 /api/chat/** 를 authenticated로 바꾸고 싶으면 바꿔도 됨
                         .anyRequest().permitAll()
                 )
 
@@ -137,9 +143,6 @@ public class SecurityConfig {
                 )
                 .httpBasic(basic -> basic.disable());
 
-        http.addFilterBefore(jwtCheckFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
-
 }

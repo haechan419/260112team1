@@ -13,5 +13,5 @@ public class ChatAttachmentDto {
     private String originalName;
     private String mimeType;
     private Long size;
-    private String url;
+//    private String url;
 }

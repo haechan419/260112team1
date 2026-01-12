@@ -14,28 +14,25 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final StompAuthChannelInterceptor stompAuthChannelInterceptor;
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-chat")
-                .setAllowedOriginPatterns("http://localhost:3000")
-                // 배포 시:
-                // .setAllowedOriginPatterns("*")  // 또는 실제 도메인
-                .withSockJS();
-    }
-
-    @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // client -> server
-        registry.setApplicationDestinationPrefixes("/app");
-
-        // server -> client (simple broker)
+        // /topic : room broadcast
+        // /queue : user 개인 큐
         registry.enableSimpleBroker("/topic", "/queue");
-
-        // user destination: /user/queue/...
+        registry.setApplicationDestinationPrefixes("/app");
         registry.setUserDestinationPrefix("/user");
     }
 
     @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws-chat")
+                .setAllowedOriginPatterns("http://localhost:3000")
+                .withSockJS()
+                .setSessionCookieNeeded(false); // ✅ 핵심
+    }
+
+    @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
+        // ✅ CONNECT/SUBSCRIBE를 가로채서 JWT/멤버검증
         registration.interceptors(stompAuthChannelInterceptor);
     }
 }

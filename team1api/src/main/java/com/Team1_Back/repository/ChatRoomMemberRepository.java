@@ -20,4 +20,12 @@ public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, 
     List<Long> findUserIdsByRoomId(@Param("roomId") Long roomId);
 
     List<ChatRoomMember> findAllByIdRoomId(Long roomId);
+
+    @Query(value = """
+        SELECT CASE WHEN EXISTS (
+          SELECT 1 FROM chat_room_member rm
+          WHERE rm.room_id = :roomId AND rm.user_id = :userId
+        ) THEN 1 ELSE 0 END
+        """, nativeQuery = true)
+    int isMember(@Param("roomId") Long roomId, @Param("userId") Long userId);
 }
