@@ -1,0 +1,344 @@
+/* -------------------------------- */
+/* 1. 기본 서랍장 레이아웃 & 애니메이션 */
+/* -------------------------------- */
+
+/* 어두운 배경 (Overlay) */
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s;
+}
+
+/* 슬라이드 패널 (Drawer) */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -400px; /* 기본적으로 화면 밖(오른쪽)에 숨김 */
+  width: 400px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 열렸을 때 */
+.cart-drawer.open {
+  right: 0;
+}
+
+/* -------------------------------- */
+/* 2. 헤더 & 예산(Budget) 섹션 */
+/* -------------------------------- */
+
+.drawer-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+}
+
+.drawer-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+  color: #333;
+}
+
+/* [NEW] 예산 현황 섹션 */
+.budget-section {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.budget-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+.warning-text {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.budget-track {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.budget-fill {
+  height: 100%;
+  background: #4f79df;
+  transition: width 0.5s ease-in-out, background-color 0.3s;
+}
+
+.budget-limit-text {
+  text-align: right;
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* -------------------------------- */
+/* 3. 장바구니 리스트 (Body) */
+/* -------------------------------- */
+
+.drawer-body {
+  flex: 1; /* 남은 높이 다 차지 */
+  overflow-y: auto; /* 내용 넘치면 스크롤 */
+  padding: 20px;
+}
+
+/* 빈 장바구니 */
+.empty-cart {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 개별 아이템 카드 */
+.cart-item {
+  display: flex;
+  gap: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.item-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.item-price {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 수량 조절 컨트롤 */
+.item-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.qty-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.qty-group button {
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-group button:hover {
+  background: #f5f5f5;
+}
+
+/* ✨ 2자리수 전용 입력칸 */
+.qty-input-drawer {
+  width: 24px; /* 2자리수에 딱 맞는 너비 */
+  text-align: center;
+  border: none; /* 그룹 안에 있으므로 테두리 제거 */
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  background: #fafafa;
+  font-weight: bold;
+  font-size: 13px;
+  height: 24px;
+  padding: 0;
+  outline: none;
+}
+
+/* 입력칸 화살표 제거 (크롬/사파리) */
+.qty-input-drawer::-webkit-outer-spin-button,
+.qty-input-drawer::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.delete-btn:hover {
+  color: #e74c3c;
+}
+
+/* -------------------------------- */
+/* 4. 하단 복합 푸터 (기안, 메모, 총계) */
+/* -------------------------------- */
+
+.drawer-footer-complex {
+  padding: 20px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 메모장 섹션 */
+.memo-section {
+  margin-bottom: 15px;
+}
+.memo-section label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #555;
+}
+.memo-section textarea {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  resize: none; /* 크기 조절 막기 */
+  font-family: inherit;
+  background: #fafafa;
+}
+.memo-section textarea:focus {
+  outline: none;
+  border-color: #4f79df;
+  background: #fff;
+}
+
+/* 가격 요약 (영수증 스타일) */
+.price-summary {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #666;
+}
+
+.summary-row.total {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #ccc; /* 점선 구분선 */
+  font-weight: 800;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 0;
+  align-items: center;
+}
+
+.total-text {
+  color: #4f79df;
+  font-size: 18px;
+}
+
+/* 결재 상신 버튼 */
+.checkout-btn {
+  width: 100%;
+  padding: 14px;
+  background: #2c3e50; /* 짙은 남색 (업무용 느낌) */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-btn:hover {
+  background: #1a252f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 반응형 (모바일) */
+@media (max-width: 480px) {
+  .cart-drawer {
+    width: 100%; /* 모바일은 꽉 차게 */
+  }
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

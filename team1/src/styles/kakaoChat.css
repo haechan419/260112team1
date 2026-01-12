@@ -1,0 +1,356 @@
+/* ===== 공통 ===== */
+.kcEmpty{
+    padding: 14px;
+    color: #6B7280;
+    font-size: 13px;
+}
+
+/* ===== 좌측 방 목록 ===== */
+.kcRoomList{
+    display:flex;
+    flex-direction: column;
+    overflow:auto;
+}
+
+.kcRoomItem{
+    border:0;
+    background: transparent;
+    cursor:pointer;
+    text-align:left;
+
+    display:grid;
+    grid-template-columns: 42px 1fr auto;
+    gap: 10px;
+
+    padding: 12px;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.kcRoomItem:hover{ background:#F9FAFB; }
+.kcRoomItem.active{ background:#EEF2FF; }
+
+.kcRoomAvatar{
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: #EAF0FF;
+    color: #2B4ACB;
+    display:grid;
+    place-items:center;
+    font-weight: 800;
+}
+
+.kcRoomMid{ min-width:0; }
+.kcRoomName{ font-weight:800; font-size:14px; }
+.kcRoomPreview{
+    margin-top: 4px;
+    font-size: 12px;
+    color:#6B7280;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+
+.kcRoomRight{
+    display:flex;
+    flex-direction: column;
+    align-items:flex-end;
+    gap: 6px;
+    min-width: 42px;
+}
+.kcBadge{
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #274690;
+    color:#fff;
+    font-size: 11px;
+    display:grid;
+    place-items:center;
+}
+
+/* ===== 메시지 영역 ===== */
+.kcMsgArea{
+    flex:1;
+    overflow:auto;
+    padding: 18px 18px 14px 18px;
+    background: #F5F7FB;
+}
+
+.kcDateChip{
+    width: fit-content;
+    margin: 6px auto 12px auto;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #E5E7EB;
+    background: rgba(255,255,255,0.9);
+    color: #6B7280;
+    font-size: 12px;
+}
+
+/* 한 줄(메시지) */
+.kcRow{
+    display:flex;
+    align-items:flex-end;
+    gap: 8px;
+    margin: 12px 0;
+
+}
+.kcRow.me{ justify-content:flex-end; }
+.kcRow.other{ justify-content:flex-start; }
+
+.kcAvatar{
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: #EAF0FF;
+    color:#2B4ACB;
+    font-weight:800;
+    display:grid;
+    place-items:center;
+    font-size: 11px;
+}
+
+.kcBubbleWrap{ display:flex; flex-direction: column; max-width: 68%; }
+
+.kcBubble{
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid #E5E7EB;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.35;
+    white-space: pre-wrap;
+    box-shadow: 0 1px 0 rgba(16,24,40,0.04);
+}
+
+.kcBubble.me{
+    color: white;
+    background: #384B8C;      /* 카톡 느낌 + ERP톤 */
+    border-top-right-radius: 14px; /* 살짝 카톡 느낌 */
+}
+
+.kcBubble.other{
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 14px;
+}
+
+.kcMeta{
+    margin-top: 4px;
+    font-size: 11px;
+    color:#9CA3AF;
+}
+.kcMeta.me{ text-align:right; }
+.kcMeta.other{ text-align:left; }
+
+/* ===== 입력 바 ===== */
+.kcInputBar{
+    padding: 12px;
+    border-top: 1px solid #E5E7EB;
+    display:flex;
+    gap: 10px;
+    background:#fff;
+}
+
+.kcInput{
+    flex:1;
+    border: 1px solid #E5E7EB;
+    border-radius: 999px;
+    padding: 10px 14px;
+    outline:none;
+}
+
+.kcSend{
+    border: 0;
+    border-radius: 999px;
+    padding: 10px 14px;
+    background: #202F70;
+    color:#fff;
+    font-weight: 800;
+    cursor:pointer;
+}
+.kcSend:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.kcRead{
+    margin-right: 6px;
+    font-weight: 700;
+    color: #94A3B8;
+}
+
+.kcRead.unread{
+    color: #5B86F7; /* 안 읽음 1을 파란 포인트로 */
+}
+
+.kcRead.read{
+    color: #9CA3AF;
+}
+
+.kcRoomRight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.kcRoomDeleteBtn {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kcRoomDeleteBtn:hover {
+    background: #f3f4f6;
+}
+
+/* attachments */
+.kcAttList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.kcAttCard {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.9);
+    max-width: 320px;
+}
+
+.kcRow.me .kcAttCard {
+    margin-left: auto;
+}
+
+.kcAttIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.06);
+    flex: 0 0 auto;
+}
+
+.kcAttThumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.06);
+    flex: 0 0 auto;
+}
+
+.kcAttThumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.kcAttMeta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.kcAttName {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kcAttSub {
+    font-size: 11px;
+    color: rgba(0,0,0,0.55);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kcAttAction {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.55);
+    flex: 0 0 auto;
+}
+
+.kcAttachBtn {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px 8px;
+    opacity: 0.85;
+}
+
+.kcAttachBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.kcInputStack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.kcFileChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.kcFileChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.06);
+    max-width: 240px;
+}
+
+.kcFileName {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 190px;
+}
+
+.kcFileRemove {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.7;
+}
+.kcFileRemove:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+
+
+

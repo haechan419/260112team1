@@ -1,0 +1,76 @@
+/* ================= Dashboard Page Styles ================= */
+
+/* 통계 카드 경고 색상 */
+.stat-value-warning {
+    color: #ef4444 !important;
+}
+
+/* Todo 관련 컴포넌트 행 */
+.dashboard-todo-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.dashboard-todo-panel {
+    flex: 1;
+    min-height: 400px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-todo-panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .dashboard-todo-row {
+        gap: 20px;
+    }
+
+    .dashboard-todo-panel {
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-todo-row {
+        gap: 16px;
+    }
+
+    .dashboard-todo-panel {
+        min-height: 360px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-todo-row {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-todo-panel {
+        min-height: auto;
+        width: 100%;
+    }
+
+    /* 모바일에서는 hover 효과 제거 */
+    .dashboard-todo-panel:hover {
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-todo-row {
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .dashboard-todo-panel {
+        min-height: auto;
+    }
+}

@@ -1,0 +1,812 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+:root {
+  --bg: #f5f6fa; /* ✅ 배경을 아주 연한 회색으로 변경 (패널이 잘 보이게) */
+  --sidebar-bg: #0f1b3a;
+  --logo-bg: #424242;
+  --topbar-bg: #5c85ef;
+  --text-main: #111827;
+  --text-muted: rgba(0, 0, 0, 0.5);
+  --stroke: #e2e8f0;
+  --height-header: 70px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Pretendard", sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.app-root {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ================= Sidebar ================= */
+
+.sidebar {
+  width: 240px;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1000;
+}
+
+/* 모바일에서 Sidebar 오버레이로 표시 */
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1001;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.sidebar-logo {
+  height: var(--height-header);
+  background: var(--logo-bg);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nav-label {
+  font-size: 12px; /* 글자 크기 */
+  font-weight: 700; /* 굵게 */
+  color: #6c757d; /* 회색으로 죽여서 메뉴와 구분 */
+
+  /* 위치 및 여백 조정 */
+  margin-top: 20px; /* 위쪽 메뉴와 간격 벌리기 */
+  margin-bottom: 8px; /* 아래쪽 메뉴와 간격 */
+  padding-left: 30px; /* 메뉴 아이콘 라인에 맞춤 */
+
+  /* 구분선 추가 (핵심) */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* 얇은 선 긋기 */
+  padding-top: 20px; /* 선과 글자 사이 간격 */
+
+  text-transform: uppercase; /* 대문자로 변경 (영어일 경우 멋짐) */
+  letter-spacing: 1px; /* 자간 넓히기 */
+}
+
+.nav-item {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+.nav-item.active {
+  color: #fff;
+  font-weight: 700;
+  border-left: 4px solid #fff;
+  padding-left: 26px;
+}
+
+.nav-icon-box {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  cursor: pointer;
+}
+.nav-icon-svg {
+  width: 24px;
+  height: 24px;
+  fill: rgba(255, 255, 255, 0.6);
+}
+.nav-icon-box.active .nav-icon-svg {
+  fill: #fff;
+}
+
+/* ================= Main Area ================= */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: var(--height-header);
+  background: var(--topbar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* 그림자 추가 */
+  z-index: 10;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-topbar-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+.ai-topbar-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  margin-left: 3px;
+  transform: translateY(-1px);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-default {
+  font-size: 18px;
+}
+.user-info {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+}
+.user-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+.user-dept {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.logout-btn {
+  background: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px;
+}
+
+/* 햄버거 메뉴 버튼 */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.hamburger-btn span {
+  width: 100%;
+  height: 3px;
+  background: #fff;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* 채팅 버튼 스타일 */
+.topIconBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  color: #fff;
+}
+
+.topIconBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ================= Content Area (여백 핵심) ================= */
+.app-content {
+  flex: 1;
+  background: var(--bg);
+  overflow: auto;
+
+  /* 🚨 여기가 핵심입니다! 내용물에 숨통을 트여주는 여백 */
+  padding: 40px;
+}
+
+/* 반응형: 모바일 패딩 조정 */
+@media (max-width: 768px) {
+  .app-content {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 16px 12px;
+  }
+}
+
+/* ================= Dashboard Styles (여기에 통합) ================= */
+
+/* 패널 공통 스타일 */
+.panel {
+  background: #fff;
+  border: 1px solid var(--stroke);
+  border-radius: 16px; /* 둥글게 */
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* 1. 상단 통계 카드 그리드 (가로 4개 배치) */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* ✅ 가로 4칸 강제 적용 */
+  gap: 24px; /* 카드 사이 간격 */
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+/* 통계 카드 내부 */
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
+}
+
+.stat-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+}
+.stat-footer {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+}
+.trend-up {
+  color: #e11d48;
+}
+.trend-down {
+  color: #10b981;
+}
+.text-muted {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* 2. 하단 차트 영역 그리드 (가로 2개 배치 2:1 비율) */
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* ✅ 차트 넓게, 목록 좁게 */
+  gap: 24px;
+  width: 100%;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1e293b;
+}
+
+/* 테이블 */
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.dashboard-table th {
+  text-align: left;
+  font-size: 13px;
+  color: #64748b;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.dashboard-table td {
+  padding: 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+/* 페이지 타이틀 */
+.page-meta {
+  color: #64748b;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.page-title {
+  margin: 0 0 30px 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* 반응형: 페이지 제목 */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .page-meta {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .page-meta {
+    font-size: 10px;
+  }
+}
+
+.chatRoomsPopover{
+    position: absolute;
+    top: 42px;
+    right: 0;
+    width: 240px;
+    background: #fff;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.12);
+    padding: 8px;
+    z-index: 9999;
+}
+
+.chatRoomItem{
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    border: 0;
+    background: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.chatRoomItem:hover{ background: rgba(17, 24, 39, 0.06); }
+
+.chatRoomsEmpty{
+    padding: 10px 12px;
+    color: rgba(17, 24, 39, 0.6);
+}
+
+
+/* 반응형 (화면 작아지면 세로로) */
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .stat-card {
+    height: 140px;
+    padding: 20px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
+  .stat-title {
+    font-size: 13px;
+  }
+
+  .stat-footer {
+    font-size: 12px;
+  }
+
+  .dashboard-row {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-grid {
+    gap: 16px;
+  }
+
+  .stat-card {
+    height: 130px;
+    padding: 18px;
+  }
+
+  .stat-value {
+    font-size: 26px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    height: 120px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .stat-title {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-footer {
+    font-size: 11px;
+  }
+
+  .panel {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .dashboard-row {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    height: auto;
+    min-height: 100px;
+    padding: 14px;
+  }
+
+  .stat-title {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
+
+  .stat-footer {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+
+  .panel {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .dashboard-table th {
+    font-size: 11px;
+  }
+
+  .dashboard-table td {
+    font-size: 12px;
+    padding: 10px 0;
+  }
+}
+
+/* ================= Topbar & Sidebar 반응형 ================= */
+
+/* 태블릿 (992px 이하) */
+@media (max-width: 992px) {
+  .topbar {
+    padding: 0 20px;
+  }
+
+  .user-info {
+    display: none; /* 사용자 정보 숨김 */
+  }
+
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 모바일 (768px 이하) */
+@media (max-width: 768px) {
+  /* 햄버거 메뉴 표시 */
+  .hamburger-btn {
+    display: flex;
+  }
+
+  /* Sidebar 숨김 (오버레이로만 표시) */
+  .app-root {
+    position: relative;
+  }
+
+  .app-main {
+    width: 100%;
+  }
+
+  /* Topbar 조정 */
+  .topbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .topbar-left {
+    gap: 8px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .ai-topbar-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .user-profile {
+    gap: 6px;
+  }
+
+  .avatar-circle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .user-info {
+    display: none; /* 모바일에서 사용자 정보 숨김 */
+  }
+
+  .user-name,
+  .user-dept {
+    display: none;
+  }
+
+  .logout-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 16px;
+  }
+
+  .topIconBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  /* Sidebar 로고 조정 */
+  .sidebar-logo {
+    font-size: 14px;
+    height: 60px;
+  }
+
+  /* Sidebar 네비게이션 조정 */
+  .sidebar-nav {
+    padding-top: 16px;
+    gap: 8px;
+  }
+
+  .nav-item {
+    height: 44px;
+    padding-left: 20px;
+    font-size: 14px;
+  }
+
+  .nav-label {
+    font-size: 11px;
+    padding-left: 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+}
+
+/* 작은 모바일 (480px 이하) */
+@media (max-width: 480px) {
+  .topbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .hamburger-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hamburger-btn span {
+    height: 2.5px;
+  }
+
+  .ai-topbar-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .avatar-circle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .logout-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .topIconBtn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .sidebar {
+    width: 220px;
+  }
+
+  .sidebar-logo {
+    font-size: 13px;
+    height: 56px;
+  }
+
+  .nav-item {
+    height: 40px;
+    padding-left: 16px;
+    font-size: 13px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    padding-left: 16px;
+  }
+}

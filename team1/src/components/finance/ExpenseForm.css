@@ -1,0 +1,315 @@
+/* 영수증 업로드 섹션 강조 스타일 */
+.receipt-upload-section {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px dashed #0ea5e9;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.receipt-upload-header {
+    margin-bottom: 16px;
+}
+
+.receipt-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0c4a6e;
+    margin-bottom: 8px;
+}
+
+.receipt-badge {
+    background: #0ea5e9;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.receipt-hint {
+    display: block;
+    font-size: 13px;
+    color: #0369a1;
+    margin-top: 4px;
+}
+
+.receipt-upload-area {
+    margin-top: 12px;
+}
+
+.file-input-label-large {
+    display: block;
+    cursor: pointer;
+}
+
+.file-drop-zone {
+    border: 2px dashed #0ea5e9;
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.file-drop-zone:hover {
+    border-color: #0284c7;
+    background: #f8fafc;
+}
+
+.file-drop-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.file-drop-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.file-drop-text strong {
+    font-size: 15px;
+    color: #0c4a6e;
+}
+
+.file-drop-text span {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.file-preview-container {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 16px;
+    background: white;
+}
+
+.file-preview-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.file-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    flex: 1;
+}
+
+.file-size {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.file-remove-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0;
+}
+
+.file-remove-btn:hover {
+    background: #dc2626;
+}
+
+.file-preview-image {
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 8px;
+    background: #f8fafc;
+    display: inline-block;
+}
+
+.file-preview-image img {
+    max-width: 200px;
+    max-height: 200px;
+    display: block;
+    border-radius: 4px;
+}
+
+.form-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 24px 0;
+}
+
+/* OCR 처리 중 표시 */
+.ocr-processing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    color: #0369a1;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.ocr-processing-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #e0f2fe;
+    border-top-color: #0ea5e9;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* OCR 적용 배지 */
+.ocr-applied-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    background-color: #10b981;
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* 등록 모드 선택 영역 */
+.registration-mode-selector {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.mode-selector-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.mode-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #0ea5e9;
+}
+
+.mode-checkbox-label {
+    user-select: none;
+}
+
+.mode-hint {
+    margin-top: 8px;
+    margin-left: 32px;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* OCR 결과 요약 카드 */
+.ocr-summary-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+}
+
+.ocr-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ocr-summary-row:last-child {
+    border-bottom: none;
+}
+
+.ocr-summary-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.ocr-summary-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.ocr-summary-hint {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* 폼 제출 로딩 오버레이 */
+.form-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.form-loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 300px;
+}
+
+.form-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #6b7280;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+.form-loading-text {
+    font-size: 15px;
+    color: #6b7280;
+    font-weight: 400;
+    margin: 0;
+    text-align: center;
+}
+

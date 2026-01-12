@@ -1,0 +1,107 @@
+/* ================= Monthly Expense Chart Styles ================= */
+
+/* 차트 행 - 좌우 100% 너비 */
+.monthly-expense-row {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 월별 지출 추이 차트 패널 - Todo 패널과 동일한 높이 */
+.monthly-expense-chart-panel {
+    min-height: 400px;
+    height: 400px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.monthly-expense-chart-panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 차트 컨테이너 - Todo 패널 높이에 맞춤 */
+.monthly-expense-chart-container {
+    width: 100%;
+    max-width: 100%;
+    height: calc(400px - 60px);
+    /* section-title 높이(약 60px)를 제외한 나머지 공간 사용 */
+    min-height: 340px;
+    padding: 16px;
+    position: relative;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.monthly-expense-chart-container canvas {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* 로딩 및 빈 상태 */
+.monthly-expense-chart-loading,
+.monthly-expense-chart-empty {
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .monthly-expense-chart-panel {
+        height: 380px;
+        min-height: 380px;
+    }
+
+    .monthly-expense-chart-container {
+        height: calc(380px - 60px);
+        min-height: 320px;
+    }
+}
+
+@media (max-width: 992px) {
+    .monthly-expense-chart-panel {
+        height: 360px;
+        min-height: 360px;
+    }
+
+    .monthly-expense-chart-container {
+        height: calc(360px - 60px);
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .monthly-expense-chart-panel {
+        height: 320px;
+        min-height: 320px;
+    }
+
+    .monthly-expense-chart-container {
+        height: calc(320px - 50px);
+        min-height: 270px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .monthly-expense-chart-panel {
+        height: 280px;
+        min-height: 280px;
+    }
+
+    .monthly-expense-chart-container {
+        height: calc(280px - 50px);
+        min-height: 230px;
+        padding: 10px;
+    }
+}

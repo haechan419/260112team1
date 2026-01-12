@@ -1,0 +1,74 @@
+.chatOverlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(17,24,39,0.35);
+    z-index: 9999;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chatDrawer{
+    width: min(920px, 92vw);  /* 카톡 PC 느낌: 넓은 패널 */
+    height: 100vh;
+    background: #fff;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 160ms ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(24px); opacity: 0.7; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+.chatDrawerHeader{
+    height: 56px;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+}
+
+.chatDrawerTitle{
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.chatCloseBtn{
+    border: 1px solid #E5E7EB;
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.chatDrawerActions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.chatNewBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f3f5;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chatNewBtn:hover {
+    background: #e9ecef;
+}
+
+.chatEmpty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+}

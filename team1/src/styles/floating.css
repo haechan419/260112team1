@@ -1,0 +1,72 @@
+/* 토스트 알림 (화면 중앙 하단) */
+.toast-message {
+  position: fixed;
+  bottom: 100px; /* 플로팅 버튼보다 살짝 위 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(33, 33, 33, 0.9); /* 검은색 반투명 */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* 플로팅 장바구니 버튼 (우측 하단) */
+.floating-cart-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #4f79df; /* 메인 블루 */
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(79, 121, 223, 0.4);
+  z-index: 9990;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.floating-cart-btn:hover {
+  transform: scale(1.1); /* 마우스 올리면 커짐 */
+  background-color: #3b5fc0;
+}
+
+/* 빨간색 숫자 뱃지 */
+.floating-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+}
+
+/* 나타나는 애니메이션 */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

@@ -1,0 +1,152 @@
+/* ===== Floating Button (왼쪽 아래) ===== */
+.ai-fab {
+   position: fixed;
+    left: 18px;
+    bottom: 18px;
+    width: 58px;
+    height: 58px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #f2f2f2;
+    color: #111;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    z-index: 9999;
+}
+
+
+@keyframes aiBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ===== Overlay ===== */
+.ai-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.20);
+    z-index: 9998;
+}
+
+/* ===== Slide Panel ===== */
+.ai-panel {
+    position: fixed;
+    right: 16px;              /* 오른쪽에서 나오게 */
+    bottom: 16px;
+    width: 380px;
+    max-width: calc(100vw - 32px);
+    height: 520px;
+    max-height: calc(100vh - 32px);
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.10);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    overflow: hidden;
+
+    /* 슬라이드 등장 */
+    animation: aiSlideUp 180ms ease-out;
+}
+
+@keyframes aiSlideUp {
+    from { transform: translateY(10px); opacity: 0.6; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== Panel 내부 ===== */
+.ai-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.ai-panel__title {
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.ai-x {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.ai-panel__body {
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.ai-input {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 10px 12px;
+    outline: none;
+    resize: none;
+}
+
+.ai-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.ai-btn {
+    flex: 1;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: #111;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.ai-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ai-btn--ghost {
+    background: #fff;
+    color: #111;
+}
+
+.ai-error {
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(220, 20, 60, 0.25);
+    background: rgba(220, 20, 60, 0.08);
+    color: #8b1a2b;
+    font-size: 12px;
+    white-space: pre-wrap;
+}
+
+.ai-result {
+    display: grid;
+    gap: 6px;
+}
+
+.ai-result__label {
+    font-weight: 800;
+    font-size: 12px;
+    opacity: 0.75;
+}
+
+.ai-result__box {
+    height: 240px;
+    overflow: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.10);
+    padding: 10px 12px;
+    background: #fafafa;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    font-size: 13px;
+}

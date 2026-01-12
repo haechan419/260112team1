@@ -1,0 +1,89 @@
+.admin-accounting-page {
+  padding: 20px;
+  background-color: transparent;
+  min-height: 100vh;
+}
+
+.page-header {
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.page-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+  display: flex;
+  gap: 8px;
+  background-color: white;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
+.tab-button.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.tab-button.active:hover {
+  background-color: #2563eb;
+}
+
+/* 탭 컨텐츠 */
+.tab-content {
+  background-color: transparent;
+}
+
+.statistics-dashboard,
+.budget-report-center {
+  width: 100%;
+}
+
+/* 리포트 센터 스타일 */
+.budget-report-center .form-select,
+.budget-report-center .form-input {
+  font-size: 14px;
+}
+
+.budget-report-center .btn {
+  transition: all 0.2s;
+}
+
+.budget-report-center .btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}

@@ -1,0 +1,848 @@
+/* src/styles/report.css */
+:root {
+    --panel: #f6f7fb;
+    --stroke: rgba(17, 24, 39, 0.12);
+    --stroke-strong: rgba(17, 24, 39, 0.2);
+    --shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+    --radius: 14px;
+    --gold: #a8802a;
+    --green: #2e8b57;
+    --green-line: rgba(39, 174, 96, 0.35);
+    --muted: rgba(17, 24, 39, 0.45);
+}
+
+.report-page {
+    max-width: 100%;
+}
+
+.page-meta {
+    color: rgba(0, 0, 0, 0.18);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.page-title {
+    margin: 0 0 18px 0;
+    font-size: 42px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+}
+
+/* 섹션 */
+.section {
+    margin-top: 30px;
+    padding-right: 12px;
+}
+
+.section-title {
+    margin: 0 0 12px 14px;
+    font-size: 24px;
+    font-weight: 650;
+    letter-spacing: -0.2px;
+
+}
+
+/* 패널: ERP 종이 박스 느낌 */
+.panel {
+    background: linear-gradient(180deg, var(--panel) 0%, #ffffff 100%);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+}
+/* ✅ 쇼핑몰 필터 스타일 (스크린샷 느낌) */
+.panel-filter2 {
+    position: relative;
+    padding: 14px 14px 12px 14px;
+}
+
+/* 상단 탭 라인 */
+.filter-tabs {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 8px 6px 14px 6px;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.1);
+}
+
+.filter-tab {
+    border: none;
+    background: transparent;
+    color: rgba(17, 24, 39, 0.72);
+    font-weight: 800;
+    font-size: 18px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    letter-spacing: -0.2px;
+}
+
+.filter-tab .caret {
+    margin-left: 6px;
+    font-weight: 900;
+    opacity: 0.7;
+}
+
+/* 활성 탭: 핑크 + 아래 포인터 */
+.filter-tab.is-active {
+    background: #ea4d6c;
+    color: #fff;
+}
+
+.filter-tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -8px;
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #ea4d6c;
+}
+
+/* Clear Filters */
+.filter-clear {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: rgba(17, 24, 39, 0.55);
+    font-weight: 800;
+    cursor: pointer;
+    padding: 8px 10px;
+}
+.filter-clear:hover {
+    color: rgba(17, 24, 39, 0.8);
+}
+
+/* 드롭다운 패널 (탭 아래 뜨는 흰 박스) */
+.filter-dropdown {
+    position: relative;
+    padding-top: 14px;
+}
+
+.dropdown-inner {
+    width: 640px;              /* 필요하면 520~720 조절 */
+    max-width: 100%;
+    background: #fff;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 18px 36px rgba(17, 24, 39, 0.12);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* 스샷처럼 2열 */
+    gap: 10px 18px;
+}
+
+/* 체크박스/라디오 항목 */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: rgba(17, 24, 39, 0.74);
+    padding: 8px 8px;
+    border-radius: 10px;
+}
+
+.dropdown-item:hover {
+    background: rgba(17, 24, 39, 0.03);
+}
+
+.dropdown-item input {
+    width: 16px;
+    height: 16px;
+}
+
+/* 선택된 칩 라인 */
+.filter-chips {
+    padding: 12px 6px 2px 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* 핑크 칩 + x */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(234, 77, 108, 0.14);
+    border: 1px solid rgba(234, 77, 108, 0.22);
+    color: rgba(17, 24, 39, 0.72);
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-weight: 800;
+}
+
+.chip-x {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.55);
+    line-height: 1;
+}
+.chip-x:hover {
+    color: rgba(17, 24, 39, 0.8);
+}
+
+
+/* 인풋/셀렉트: 더 깔끔하게 */
+.input-box {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--stroke-strong);
+    border-radius: 12px;
+    background: #fff;
+    padding: 0 12px;
+    font-size: 15px;
+    outline: none;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.input-box:focus {
+    border-color: rgba(79, 121, 223, 0.75);
+    box-shadow: 0 0 0 4px rgba(79, 121, 223, 0.16);
+}
+
+/* Radio list */
+.radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 8px 2px;
+}
+
+.radio-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 650;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+.radio-row:hover {
+    background: rgba(17, 24, 39, 0.035);
+    border-color: var(--stroke);
+}
+
+.radio-row input {
+    transform: translateY(1px);
+}
+
+.highlight-red {
+    color: #e74c3c;
+    font-weight: 900;
+}
+
+/* Preview: ‘검증 박스’ 느낌 강화 */
+.preview-box {
+    padding: 18px;
+}
+
+.preview-inner {
+    max-width: 560px;
+    margin: 0 auto;
+    border: 1px solid rgba(39, 174, 96, 0.28);
+    border-radius: 14px;
+    padding: 18px 20px;
+    background: #fbfffd;
+}
+
+.preview-title {
+    color: var(--green);
+    font-weight: 900;
+    margin-bottom: 10px;
+    letter-spacing: -0.2px;
+}
+
+.preview-divider {
+    height: 1px;
+    background: var(--green-line);
+    margin: 10px 0 14px 0;
+}
+
+.preview-divider.bottom {
+    margin-top: 16px;
+}
+
+.preview-row {
+    display: grid;
+    grid-template-columns: 200px 18px 1fr;
+    gap: 6px;
+    padding: 7px 0;
+    font-size: 15.5px;
+}
+
+.preview-row .k {
+    color: var(--gold);
+    font-weight: 900;
+}
+
+.preview-row .c {
+    color: rgba(17, 24, 39, 0.7);
+    font-weight: 800;
+}
+
+.preview-row .v {
+    color: var(--green);
+    font-weight: 900;
+}
+
+/* 드롭다운 검색 */
+.dropdown-search-row {
+    grid-column: 1 / -1; /* 2열 위에 전체 폭 */
+    margin-bottom: 8px;
+}
+
+.dropdown-search {
+    width: 100%;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid rgba(17, 24, 39, 0.14);
+    padding: 0 12px;
+    outline: none;
+    font-weight: 600;
+}
+
+.dropdown-search:focus {
+    border-color: rgba(234, 77, 108, 0.55);
+    box-shadow: 0 0 0 4px rgba(234, 77, 108, 0.14);
+}
+
+/* 옵션 영역을 grid로 유지하면서 검색이 들어오면 깔끔히 */
+.dropdown-options {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+}
+
+.dropdown-empty {
+    grid-column: 1 / -1;
+    padding: 10px 6px;
+    color: rgba(17, 24, 39, 0.55);
+    font-weight: 700;
+}
+/* ===== Actions (Preview 생성 후 버튼 영역) ===== */
+.actions-row {
+    display: flex;
+    justify-content: flex-end;   /* ✅ 오른쪽 정렬 */
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+
+    /* 🔥 이 두 줄이 핵심 */
+    max-width: 100%;
+    padding-right: 12px;   /* 살짝만 안쪽으로 */
+}
+
+/* 공통 버튼 */
+.action-btn {
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 12px;
+    font-weight: 650;
+    letter-spacing: -0.2px;
+    border: 1px solid rgba(17, 24, 39, 0.14);
+    background: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+    transition: transform 0.06s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(17, 24, 39, 0.08);
+    border-color: rgba(17, 24, 39, 0.20);
+}
+
+.action-btn:active {
+    transform: translateY(0px);
+}
+
+/* 보조 버튼 (Export 같은 회색톤) */
+.action-secondary {
+    background: #fff;
+    color: rgba(17, 24, 39, 0.78);
+}
+
+/* 메인 버튼 1 (Generate) */
+.action-primary {
+    background: rgba(99, 122, 255, 0.12);
+    border-color: rgba(99, 122, 255, 0.35);
+    color: rgba(45, 61, 165, 1);
+}
+
+/* 메인 버튼 2 (Download) — 조금 더 진하게 */
+.action-primary2 {
+    background: rgba(99, 122, 255, 0.95);
+    border-color: rgba(99, 122, 255, 0.95);
+    color: #fff;
+}
+
+.action-primary2:hover {
+    border-color: rgba(99, 122, 255, 1);
+}
+
+/* 안내 문구 */
+.actions-hint {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    color: rgba(17, 24, 39, 0.50);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Actions 섹션만 오른쪽 여백 제거 */
+.section.section-actions {
+    padding-right: 0;   /* ✅ 기존 .section padding-right:12px 무효화 */
+}
+
+/* 버튼을 더 오른쪽으로 “살짝” 밀기 */
+.section.section-actions .actions-row {
+    padding-right: 0;      /* ✅ 12px 제거 */
+    margin-right: -10px;   /* ✅ 끝으로 더 밀기 (원하면 -6 ~ -14 조절) */
+}
+
+/* 안내문도 동일 기준선 */
+.section.section-actions .actions-hint {
+    padding-right: 0;
+    margin-right: -10px;
+}
+
+/* ===== Document Viewer (Preview) ===== */
+.preview-box {
+    padding: 14px;
+}
+
+/* ✅ 패널 안에서 꽉 차고, 내부 스크롤 */
+.doc-viewer {
+    width: 100%;
+    height: 420px;              /* ✅ 고정 높이 → 내부 스크롤 발생 */
+    overflow: auto;
+    border-radius: 14px;
+    border: 1px solid rgba(17, 24, 39, 0.10);
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* 비었을 때 */
+.doc-empty {
+    height: 100%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: rgba(17, 24, 39, 0.55);
+    font-weight: 700;
+}
+
+.doc-empty-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.65);
+}
+
+.doc-empty-desc {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(17, 24, 39, 0.45);
+}
+
+/* ===== PDF mock ===== */
+.doc-pdf {
+    padding: 18px;
+}
+
+.pdf-page {
+    width: min(820px, 100%);
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(17, 24, 39, 0.10);
+    box-shadow: 0 16px 30px rgba(17, 24, 39, 0.08);
+    padding: 18px 18px 12px 18px;
+}
+
+.pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.pdf-title {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+}
+
+.pdf-sub {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(17, 24, 39, 0.45);
+}
+
+.pdf-body {
+    padding: 14px 2px 10px 2px;
+}
+
+.pdf-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(17, 24, 39, 0.08);
+}
+
+.pdf-row .k {
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.62);
+}
+
+.pdf-row .v {
+    font-weight: 850;
+    color: rgba(17, 24, 39, 0.85);
+}
+
+.pdf-hr {
+    height: 1px;
+    background: rgba(17, 24, 39, 0.10);
+    margin: 14px 0;
+}
+
+.pdf-paragraph {
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(17, 24, 39, 0.60);
+    font-weight: 650;
+}
+
+.pdf-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+    font-size: 12px;
+    color: rgba(17, 24, 39, 0.45);
+    font-weight: 700;
+}
+/* ===== Excel mock ===== */
+.doc-excel {
+    padding: 14px;
+}
+
+.excel-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.excel-pill {
+    background: rgba(99, 122, 255, 0.12);
+    border: 1px solid rgba(99, 122, 255, 0.22);
+    color: rgba(45, 61, 165, 1);
+    font-weight: 900;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+.excel-meta {
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(17, 24, 39, 0.45);
+}
+
+/* 그리드 전체 */
+.excel-grid {
+    width: min(980px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 46px repeat(6, 1fr);
+    border: 1px solid rgba(17, 24, 39, 0.14);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.excel-corner {
+    background: rgba(17, 24, 39, 0.04);
+    border-right: 1px solid rgba(17, 24, 39, 0.10);
+    border-bottom: 1px solid rgba(17, 24, 39, 0.10);
+    height: 34px;
+}
+
+.excel-colhead {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.60);
+    background: rgba(17, 24, 39, 0.04);
+    border-bottom: 1px solid rgba(17, 24, 39, 0.10);
+    border-right: 1px solid rgba(17, 24, 39, 0.10);
+}
+
+/* 행 한 줄: rowhead + 6 cells */
+.excel-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 46px repeat(6, 1fr);
+    min-height: 34px;
+}
+
+.excel-rowhead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.55);
+    background: rgba(17, 24, 39, 0.03);
+    border-right: 1px solid rgba(17, 24, 39, 0.10);
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.excel-cell {
+    padding: 8px 10px;
+    border-right: 1px solid rgba(17, 24, 39, 0.10);
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+    font-weight: 700;
+    color: rgba(17, 24, 39, 0.78);
+}
+
+.excel-cell.keycell {
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.60);
+    background: rgba(17, 24, 39, 0.015);
+}
+
+.excel-cell.muted {
+    color: rgba(17, 24, 39, 0.20);
+}
+
+/* ===== Preview: 꽉 채우고 내부 스크롤 ===== */
+.preview-box { padding: 14px; }
+
+.doc-viewer{
+    width: 100%;
+    height: clamp(340px, 48vh, 560px);
+    overflow: auto;
+    border-radius: 14px;
+    border: 1px solid rgba(17, 24, 39, 0.10);
+    background: rgba(255,255,255,0.7);
+}
+
+.doc-empty{
+    height: 100%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: rgba(17, 24, 39, 0.55);
+    font-weight: 700;
+}
+
+.doc-empty-title{
+    font-size: 16px;
+    font-weight: 900;
+    color: rgba(17, 24, 39, 0.65);
+}
+
+.doc-empty-desc{
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(17, 24, 39, 0.45);
+}
+
+/* ===== PDF mock ===== */
+.doc-pdf{ padding: 18px; }
+
+.pdf-page{
+    width: min(820px, 100%);
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(17,24,39,0.10);
+    box-shadow: 0 16px 30px rgba(17,24,39,0.08);
+    padding: 18px 18px 12px 18px;
+}
+
+.pdf-header{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(17,24,39,0.08);
+}
+.pdf-title{ font-size: 18px; font-weight: 900; letter-spacing: -0.2px; }
+.pdf-sub{ font-size: 12px; font-weight: 700; color: rgba(17,24,39,0.45); }
+
+.pdf-body{ padding: 14px 2px 10px 2px; }
+
+.pdf-row{
+    display:grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(17,24,39,0.08);
+}
+.pdf-row .k{ font-weight: 900; color: rgba(17,24,39,0.62); }
+.pdf-row .v{ font-weight: 850; color: rgba(17,24,39,0.85); }
+
+.pdf-hr{
+    height: 1px;
+    background: rgba(17,24,39,0.10);
+    margin: 14px 0;
+}
+
+.pdf-paragraph{
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(17,24,39,0.60);
+    font-weight: 650;
+}
+
+.pdf-footer{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(17,24,39,0.08);
+    font-size: 12px;
+    color: rgba(17,24,39,0.45);
+    font-weight: 700;
+}
+
+/* ===== Excel mock ===== */
+.doc-excel{ padding: 14px; }
+
+.excel-topbar{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.excel-pill{
+    background: rgba(99,122,255,0.12);
+    border: 1px solid rgba(99,122,255,0.22);
+    color: rgba(45,61,165,1);
+    font-weight: 900;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+.excel-meta{
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(17,24,39,0.45);
+}
+
+.excel-grid{
+    width: min(980px, 100%);
+    margin: 0 auto;
+    display:grid;
+    grid-template-columns: 46px repeat(6, 1fr);
+    border: 1px solid rgba(17,24,39,0.14);
+    border-radius: 10px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.excel-corner{
+    background: rgba(17,24,39,0.04);
+    border-right: 1px solid rgba(17,24,39,0.10);
+    border-bottom: 1px solid rgba(17,24,39,0.10);
+    height: 34px;
+}
+
+.excel-colhead{
+    height: 34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight: 900;
+    color: rgba(17,24,39,0.60);
+    background: rgba(17,24,39,0.04);
+    border-bottom: 1px solid rgba(17,24,39,0.10);
+    border-right: 1px solid rgba(17,24,39,0.10);
+}
+
+.excel-row{
+    grid-column: 1 / -1;
+    display:grid;
+    grid-template-columns: 46px repeat(6, 1fr);
+    min-height: 34px;
+}
+
+.excel-rowhead{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight: 900;
+    color: rgba(17,24,39,0.55);
+    background: rgba(17,24,39,0.03);
+    border-right: 1px solid rgba(17,24,39,0.10);
+    border-bottom: 1px solid rgba(17,24,39,0.08);
+}
+
+.excel-cell{
+    padding: 8px 10px;
+    border-right: 1px solid rgba(17,24,39,0.10);
+    border-bottom: 1px solid rgba(17,24,39,0.08);
+    font-weight: 700;
+    color: rgba(17,24,39,0.78);
+}
+.excel-cell.keycell{
+    font-weight: 900;
+    color: rgba(17,24,39,0.60);
+    background: rgba(17,24,39,0.015);
+}
+.excel-cell.muted{ color: rgba(17,24,39,0.20); }
+
+/* ===== dropdown scope disable (사원) ===== */
+.dropdown-item.is-disabled{
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+/* ===== Actions 오른쪽 끝 정렬 (section padding 무효화) ===== */
+.section.section-actions{ padding-right: 0; }
+.section.section-actions .actions-row{ margin-right: -10px; padding-right: 0; }
+.section.section-actions .actions-hint{ margin-right: -10px; padding-right: 0; }
+
+/* ===== Download 비활성화 상태 ===== */
+.action-btn.is-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.action-btn.is-disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+
+
+/* 반응형 */
+@media (max-width: 980px) {
+    .filter-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,217 @@
+/* src/styles/dashboard.css */
+
+/* 1. 상단 통계 카드 (4열 배치) */
+.dashboard-grid {
+    display: grid; /* 그리드 모드 켜기 */
+    grid-template-columns: repeat(4, 1fr); /* 가로 4등분 (1:1:1:1) */
+    gap: 24px; /* 카드 사이 간격 */
+    width: 100%; /* 가로 꽉 채우기 */
+    margin-bottom: 24px;
+}
+
+/* 카드 디자인 */
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--stroke); /* layout.css 변수 사용 */
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+
+    /* 카드 내부 세로 정렬 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 160px; /* 높이 고정 */
+}
+
+.stat-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #888;
+    margin-bottom: 12px;
+}
+
+.stat-value {
+    font-size: 32px; /* 숫자 크게 */
+    font-weight: 800;
+    color: #333;
+    letter-spacing: -1px;
+}
+
+.stat-footer {
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 상승/하락 색상 */
+.trend-up {
+    color: #e74c3c;
+} /* 빨강 */
+.trend-down {
+    color: #2e8b57;
+} /* 초록 */
+
+/* 2. 하단 차트 & 테이블 영역 (2열 배치) */
+.dashboard-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 왼쪽(2) : 오른쪽(1) 비율 */
+    gap: 24px;
+    width: 100%;
+}
+
+/* 패널 공통 스타일 (layout.css에 있는 패널 스타일을 덮어쓰거나 보완) */
+.panel {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+/* 테이블 스타일 */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.dashboard-table th {
+    text-align: left;
+    font-size: 12px;
+    color: #999;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.dashboard-table td {
+    padding: 14px 0;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+/* ================= 반응형 디자인 ================= */
+
+/* 태블릿 (992px 이하) */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        gap: 16px;
+    }
+
+    .stat-card {
+        height: 130px;
+        padding: 18px;
+    }
+
+    .stat-value {
+        font-size: 26px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .dashboard-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 모바일 (768px 이하) */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        height: 120px;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .stat-title {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .stat-footer {
+        font-size: 11px;
+    }
+
+    .panel {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .dashboard-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* 작은 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .stat-card {
+        height: auto;
+        min-height: 100px;
+        padding: 14px;
+    }
+
+    .stat-title {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .stat-footer {
+        font-size: 10px;
+        margin-top: 8px;
+    }
+
+    .panel {
+        padding: 14px;
+        border-radius: 10px;
+    }
+
+    .section-title {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-table th {
+        font-size: 11px;
+    }
+
+    .dashboard-table td {
+        font-size: 12px;
+        padding: 10px 0;
+    }
+}
