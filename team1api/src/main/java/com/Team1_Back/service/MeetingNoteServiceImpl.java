@@ -23,11 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -180,7 +177,7 @@ public class MeetingNoteServiceImpl implements MeetingNoteService {
             }
 
             // 회의록에서 날짜 추출 (기본 마감일로 사용)
-            LocalDate defaultDueDate = extractMeetingDateFromContent(fileContent);
+            java.time.LocalDate defaultDueDate = extractMeetingDateFromContent(fileContent);
             if (defaultDueDate == null) {
                 // 날짜를 추출하지 못한 경우 회의록 업로드 날짜 사용
                 defaultDueDate = meetingNote.getUploadDate().toLocalDate();
@@ -195,7 +192,7 @@ public class MeetingNoteServiceImpl implements MeetingNoteService {
             int createdCount = 0;
             for (TodoDTO todoDTO : todos) {
                 // AI가 날짜를 제공하지 않은 경우 회의록 날짜를 기본값으로 사용
-                LocalDate dueDate = todoDTO.getDueDate() != null
+                java.time.LocalDate dueDate = todoDTO.getDueDate() != null
                         ? todoDTO.getDueDate()
                         : defaultDueDate;
 
@@ -230,16 +227,16 @@ public class MeetingNoteServiceImpl implements MeetingNoteService {
     }
 
     // 회의록 내용에서 날짜 추출
-    private LocalDate extractMeetingDateFromContent(String fileContent) {
+    private java.time.LocalDate extractMeetingDateFromContent(String fileContent) {
         if (fileContent == null || fileContent.isBlank()) {
             return null;
         }
 
         // 다양한 날짜 형식 패턴 매칭
         // "2026년 01월 06일", "2026-01-06", "2026/01/06" 등
-        Pattern pattern = Pattern.compile(
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
                 "(\\d{4})[년\\s-/.]+(\\d{1,2})[월\\s-/.]+(\\d{1,2})[일]?");
-        Matcher matcher = pattern.matcher(fileContent);
+        java.util.regex.Matcher matcher = pattern.matcher(fileContent);
 
         if (matcher.find()) {
             try {
@@ -248,7 +245,7 @@ public class MeetingNoteServiceImpl implements MeetingNoteService {
                 int day = Integer.parseInt(matcher.group(3));
 
                 // 유효한 날짜인지 확인
-                LocalDate date = LocalDate.of(year, month, day);
+                java.time.LocalDate date = java.time.LocalDate.of(year, month, day);
                 log.info("[회의록 분석] 날짜 추출 성공: {}", date);
                 return date;
             } catch (Exception e) {

@@ -40,11 +40,11 @@ public class ApprovalRequestRepositoryTests {
     @Transactional
     public void testInsert() {
         // given
-        User requester = userRepository.findByEmployeeNo("EMP00001")
+        User requester = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
-        User approver = userRepository.findByEmployeeNo("EMP00002")
-                .orElseGet(() -> requester); // EMP00002가 없으면 requester 사용
+        User approver = userRepository.findByEmployeeNo("20250002")
+                .orElseGet(() -> requester); // 20250002가 없으면 requester 사용
 
         ApprovalRequest approvalRequest = ApprovalRequest.builder()
                 .requestType("EXPENSE")
@@ -67,7 +67,7 @@ public class ApprovalRequestRepositoryTests {
     @Transactional
     public void testFindByRequesterId() {
         // given
-        User requester = userRepository.findByEmployeeNo("EMP00001")
+        User requester = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
@@ -91,7 +91,7 @@ public class ApprovalRequestRepositoryTests {
     @Transactional
     public void testFindByRequesterIdAndStatusSnapshot() {
         // given
-        User requester = userRepository.findByEmployeeNo("EMP00001")
+        User requester = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
@@ -182,7 +182,7 @@ public class ApprovalRequestRepositoryTests {
     @Transactional
     public void testFindByRequestTypeAndRefId() {
         // given
-        User requester = userRepository.findByEmployeeNo("EMP00001")
+        User requester = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         // 먼저 Expense 생성
@@ -222,10 +222,10 @@ public class ApprovalRequestRepositoryTests {
     @Transactional
     public void testFindByApproverId() {
         // given
-        User approver = userRepository.findByEmployeeNo("EMP00002")
+        User approver = userRepository.findByEmployeeNo("20250002")
                 .orElseGet(() -> {
-                    // EMP00002가 없으면 EMP00001 사용
-                    return userRepository.findByEmployeeNo("EMP00001")
+                    // 20250002가 없으면 20250001 사용
+                    return userRepository.findByEmployeeNo("20250001")
                             .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
                 });
 
@@ -256,8 +256,8 @@ public class ApprovalRequestRepositoryTests {
      */
     @Test
     public void insertDummyApprovalRequests() {
-        User admin = userRepository.findByEmployeeNo("EMP00002")
-                .orElseThrow(() -> new RuntimeException("EMP00002 관리자를 찾을 수 없습니다."));
+        User admin = userRepository.findByEmployeeNo("20250002")
+                .orElseThrow(() -> new RuntimeException("20250002 관리자를 찾을 수 없습니다."));
 
         // 제출된 지출 내역에 대해 결재 요청 생성
         List<Expense> submittedExpenses = expenseRepository.findAll().stream()

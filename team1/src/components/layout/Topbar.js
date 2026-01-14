@@ -9,7 +9,7 @@ import { chatApi } from "../../api/chatApi";
 import FloatingAI from "../../pages/FloatingAI"; //
 
 
-export default function Topbar({ onMenuClick }) {
+export default function Topbar() {
     const navigate = useNavigate();
     const { loginState, doLogout } = useCustomLogin();
     const { setOpen: openAI } = useFloatingAI();
@@ -69,18 +69,6 @@ export default function Topbar({ onMenuClick }) {
         <>
             <header className="topbar">
                 <div className="topbar-left">
-                    {/* 햄버거 메뉴 버튼 (모바일) */}
-                    <button
-                        className="hamburger-btn"
-                        onClick={onMenuClick}
-                        aria-label="Toggle menu"
-                        title="메뉴"
-                        type="button"
-                    >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
                     <button
                         className="ai-topbar-btn"
                         onClick={() => openAI(true)}
@@ -94,20 +82,20 @@ export default function Topbar({ onMenuClick }) {
 
 
                 <div className="topbar-right">
-          <div className="user-profile">
-            <div className="avatar-circle">
-              {loginState?.thumbnailUrl || loginState?.profileImageUrl ? (
-                <img
-                  src={`http://localhost:8080${
-                    loginState.thumbnailUrl || loginState.profileImageUrl
-                  }`}
-                  alt="프로필 이미지"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
+                    <div className="user-profile">
+                        <div className="avatar-circle">
+
+                            {loginState?.thumbnailUrl || loginState?.profileImageUrl ? (
+                                <img
+                                    src={`http://localhost:8080${loginState.thumbnailUrl || loginState.profileImageUrl
+                                        }`}
+                                    alt="프로필 이미지"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                    }}
+                                />
                             ) : (
                                 <span style={{ fontSize: "18px" }}>👤</span>
                             )}

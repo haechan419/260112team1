@@ -49,7 +49,7 @@ public class ExpenseRepositoryTests {
     @Transactional
     public void testInsert() {
         // given
-        User testUser = userRepository.findByEmployeeNo("EMP00001")
+        User testUser = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         Expense expense = Expense.builder()
@@ -75,7 +75,7 @@ public class ExpenseRepositoryTests {
     @Transactional
     public void testFindByWriterId() {
         // given
-        User testUser = userRepository.findByEmployeeNo("EMP00001")
+        User testUser = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
@@ -94,7 +94,7 @@ public class ExpenseRepositoryTests {
     @Transactional
     public void testFindByWriterIdAndStatus() {
         // given
-        User testUser = userRepository.findByEmployeeNo("EMP00001")
+        User testUser = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
@@ -119,7 +119,7 @@ public class ExpenseRepositoryTests {
     @Transactional
     public void testFindByUserIdAndDateRange() {
         // given
-        User testUser = userRepository.findByEmployeeNo("EMP00001")
+        User testUser = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         LocalDate startDate = LocalDate.now().minusMonths(1);
@@ -154,7 +154,7 @@ public class ExpenseRepositoryTests {
     @Transactional
     public void testFindByIdAndWriterId() {
         // given
-        User testUser = userRepository.findByEmployeeNo("EMP00001")
+        User testUser = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         // 실제 존재하는 지출 ID를 사용하거나, 먼저 생성
@@ -185,7 +185,7 @@ public class ExpenseRepositoryTests {
     @Transactional
     public void testFindByIdWithWriter() {
         // given
-        User testUser = userRepository.findByEmployeeNo("EMP00001")
+        User testUser = userRepository.findByEmployeeNo("20250001")
                 .orElseThrow(() -> new RuntimeException("테스트 사용자를 찾을 수 없습니다."));
 
         Expense expense = Expense.builder()
@@ -300,8 +300,8 @@ public class ExpenseRepositoryTests {
      * 지출 내역 더미 데이터 생성
      * 
      * ⚠️ 사전 요구사항:
-     * - HR 팀원이 UserDataInitTest.insertTestUsers() 먼저 실행해야 함
-     * - 최소 4명의 사용자 (EMP00001, EMP00002, EMP00003, EMP00004) 필요
+     * - HR 팀원이 UserRepositoryTests.insertDummyUsers() 먼저 실행해야 함
+     * - 최소 4명의 사용자 (20250001, 20250002, 20250003, 20250004) 필요
      * 
      * 생성 개수:
      * - user1: 100개 (페이징 테스트용, 예산 초과 주의 인원 아님)
@@ -314,14 +314,14 @@ public class ExpenseRepositoryTests {
     @Rollback(false)  
     public void insertDummyExpenses() {
         // 필요한 사용자들
-        User user1 = userRepository.findByEmployeeNo("EMP00001")
-                .orElseThrow(() -> new RuntimeException("EMP00001 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
-        User user2 = userRepository.findByEmployeeNo("EMP00002")
-                .orElseThrow(() -> new RuntimeException("EMP00002 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
-        User user3 = userRepository.findByEmployeeNo("EMP00003")
-                .orElseThrow(() -> new RuntimeException("EMP00003 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
-        User user4 = userRepository.findByEmployeeNo("EMP00004")
-                .orElseThrow(() -> new RuntimeException("EMP00004 사용자를 찾을 수 없습니다. UserDataInitTest.insertTestUsers()를 먼저 실행하세요."));
+        User user1 = userRepository.findByEmployeeNo("20250001")
+                .orElseThrow(() -> new RuntimeException("20250001 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
+        User user2 = userRepository.findByEmployeeNo("20250002")
+                .orElseThrow(() -> new RuntimeException("20250002 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
+        User user3 = userRepository.findByEmployeeNo("20250003")
+                .orElseThrow(() -> new RuntimeException("20250003 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
+        User user4 = userRepository.findByEmployeeNo("20250004")
+                .orElseThrow(() -> new RuntimeException("20250004 사용자를 찾을 수 없습니다. UserRepositoryTests.insertDummyUsers()를 먼저 실행하세요."));
 
         // ✅ 가맹점 확장 및 분류
         String[] smallMerchants = {"스타벅스 강남점", "맥도날드 역삼점", "GS25 편의점", "CU 편의점", "세븐일레븐", "이디야커피 강남점", "던킨도넛 역삼점"};
@@ -361,7 +361,7 @@ public class ExpenseRepositoryTests {
                 merchant,
                 amount,
                 categories[random.nextInt(categories.length)],
-                currentMonthStart.plusDays(random.nextInt(Math.max(1, now.getDayOfMonth() - 1))),
+                currentMonthStart.plusDays(random.nextInt(now.getDayOfMonth())),
                 "더미 지출 내역 (현재 월 APPROVED) " + (i + 1)
             );
             currentExpense += amount;
@@ -379,7 +379,7 @@ public class ExpenseRepositoryTests {
                 merchant,
                 amount,
                 categories[random.nextInt(categories.length)],
-                currentMonthStart.plusDays(random.nextInt(Math.max(1, now.getDayOfMonth() - 1))),
+                currentMonthStart.plusDays(random.nextInt(now.getDayOfMonth())),
                 "더미 지출 내역 (현재 월 DRAFT) " + (i + 1)
             );
         }
@@ -456,7 +456,7 @@ public class ExpenseRepositoryTests {
                 merchant,
                 amount,
                 categories[random.nextInt(categories.length)],
-                currentMonthStart.plusDays(random.nextInt(Math.max(1, now.getDayOfMonth() - 1))),
+                currentMonthStart.plusDays(random.nextInt(now.getDayOfMonth())),
                 "더미 지출 내역 user2 (현재 월 APPROVED) " + (i + 1)
             );
             currentExpense2 += amount;
@@ -505,7 +505,7 @@ public class ExpenseRepositoryTests {
                 merchant,
                 amount,
                 categories[random.nextInt(categories.length)],
-                currentMonthStart.plusDays(random.nextInt(Math.max(1, now.getDayOfMonth() - 1))),
+                currentMonthStart.plusDays(random.nextInt(now.getDayOfMonth())),
                 "더미 지출 내역 user3 (현재 월 APPROVED) " + (i + 1)
             );
             currentExpense3 += amount;
@@ -599,24 +599,24 @@ public class ExpenseRepositoryTests {
     @Transactional  
     @Rollback(false)
     public void insertDummyExpensesForStatistics() {
-        User user1 = userRepository.findByEmployeeNo("EMP00001")
-                .orElseThrow(() -> new RuntimeException("EMP00001 사용자를 찾을 수 없습니다."));
-        User user2 = userRepository.findByEmployeeNo("EMP00002")
-                .orElseThrow(() -> new RuntimeException("EMP00002 사용자를 찾을 수 없습니다."));
-        User user3 = userRepository.findByEmployeeNo("EMP00003")
-                .orElseThrow(() -> new RuntimeException("EMP00003 사용자를 찾을 수 없습니다."));
-        User user4 = userRepository.findByEmployeeNo("EMP00004")
-                .orElseThrow(() -> new RuntimeException("EMP00004 사용자를 찾을 수 없습니다."));
+        User user1 = userRepository.findByEmployeeNo("20250001")
+                .orElseThrow(() -> new RuntimeException("20250001 사용자를 찾을 수 없습니다."));
+        User user2 = userRepository.findByEmployeeNo("20250002")
+                .orElseThrow(() -> new RuntimeException("20250002 사용자를 찾을 수 없습니다."));
+        User user3 = userRepository.findByEmployeeNo("20250003")
+                .orElseThrow(() -> new RuntimeException("20250003 사용자를 찾을 수 없습니다."));
+        User user4 = userRepository.findByEmployeeNo("20250004")
+                .orElseThrow(() -> new RuntimeException("20250004 사용자를 찾을 수 없습니다."));
 
         LocalDate now = LocalDate.now();
 
-        // 사용자 (EMP00001, EMP00003) - 현재 월 APPROVED
-        createExpense(user1, ApprovalStatus.APPROVED, "이마트", 150000, "비품", now.minusDays(1), "개발팀 사무용품 구매");
+        // 영업팀 (20250001, 20250003) - 현재 월 APPROVED
+        createExpense(user1, ApprovalStatus.APPROVED, "이마트", 150000, "비품", now, "개발팀 사무용품 구매");
         createExpense(user1, ApprovalStatus.APPROVED, "스타벅스 강남점", 15000, "식비", now.minusDays(3), "팀 회의");
         createExpense(user3, ApprovalStatus.APPROVED, "이마트", 616000, "비품", now.minusDays(5), "마케팅팀 홍보물");
         createExpense(user3, ApprovalStatus.APPROVED, "스타벅스 강남점", 18000, "식비", now.minusDays(1), "팀 회의");
 
-        // 사용자 (EMP00002, EMP00004) - 현재 월 APPROVED
+        // 관리팀(20250002, 20250004) - 현재 월 APPROVED
         createExpense(user2, ApprovalStatus.APPROVED, "이마트", 643000, "비품", now.minusDays(4), "영업팀 프레젠테이션 용품");
         createExpense(user2, ApprovalStatus.APPROVED, "스타벅스 강남점", 12000, "식비", now.minusDays(2), "고객 미팅");
         createExpense(user4, ApprovalStatus.APPROVED, "교보문고", 80000, "비품", now.minusDays(2), "기술 서적 구매");
@@ -638,69 +638,69 @@ public class ExpenseRepositoryTests {
     @Transactional  
     @Rollback(false)
     public void insertDummyHistoricalExpenses() {
-        User user1 = userRepository.findByEmployeeNo("EMP00001")
-                .orElseThrow(() -> new RuntimeException("EMP00001 사용자를 찾을 수 없습니다."));
-        User user2 = userRepository.findByEmployeeNo("EMP00003")
-                .orElseThrow(() -> new RuntimeException("EMP00003 사용자를 찾을 수 없습니다."));
-        User user3 = userRepository.findByEmployeeNo("EMP00005")
-                .orElseThrow(() -> new RuntimeException("EMP00005 사용자를 찾을 수 없습니다."));
-        User user4 = userRepository.findByEmployeeNo("EMP00007")
-                .orElseThrow(() -> new RuntimeException("EMP00007 사용자를 찾을 수 없습니다."));
+        User user1 = userRepository.findByEmployeeNo("20250001")
+                .orElseThrow(() -> new RuntimeException("20250001 사용자를 찾을 수 없습니다."));
+        User user2 = userRepository.findByEmployeeNo("20250003")
+                .orElseThrow(() -> new RuntimeException("20250003 사용자를 찾을 수 없습니다."));
+        User user3 = userRepository.findByEmployeeNo("20250005")
+                .orElseThrow(() -> new RuntimeException("20250005 사용자를 찾을 수 없습니다."));
+        User user4 = userRepository.findByEmployeeNo("20250007")
+                .orElseThrow(() -> new RuntimeException("20250007 사용자를 찾을 수 없습니다."));
 
         LocalDate now = LocalDate.now();
         Random random = new Random();
         ApprovalStatus[] pastStatuses = {ApprovalStatus.APPROVED, ApprovalStatus.REJECTED};
 
-        // EMP00001 - 2개월 전 데이터
+        // 20250001 - 2개월 전 데이터
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 15000, "식비", now.minusDays(60), "팀 회의 커피");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 45000, "비품", now.minusDays(55), "사무용품 구매");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 8000, "기타", now.minusDays(50), "간식 구매");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 35000, "비품", now.minusDays(45), "기술 서적");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 18000, "식비", now.minusDays(40), "고객 미팅");
 
-        // EMP00001 - 1개월 전 데이터
+        // 20250001 - 1개월 전 데이터
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 52000, "비품", now.minusDays(35), "개발 도구");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "맥도날드 역삼점", 12000, "식비", now.minusDays(30), "점심 식사");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 6000, "기타", now.minusDays(28), "음료 구매");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 20000, "식비", now.minusDays(22), "코드 리뷰 미팅");
         createExpense(user1, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 28000, "비품", now.minusDays(20), "도서 구매");
 
-        // EMP00003 - 2개월 전 데이터
+        // 20250003 - 2개월 전 데이터
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 25000, "식비", now.minusDays(58), "고객 미팅");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 68000, "비품", now.minusDays(52), "프레젠테이션 용품");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 5000, "기타", now.minusDays(48), "음료 구매");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 42000, "비품", now.minusDays(42), "업무 서적");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 22000, "식비", now.minusDays(38), "고객 미팅");
 
-        // EMP00003 - 1개월 전 데이터
+        // 20250003 - 1개월 전 데이터
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 55000, "비품", now.minusDays(32), "마케팅 자료");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "맥도날드 역삼점", 10000, "식비", now.minusDays(27), "점심 식사");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 4000, "기타", now.minusDays(24), "간식 구매");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 30000, "식비", now.minusDays(19), "고객 미팅");
         createExpense(user2, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 38000, "비품", now.minusDays(16), "업무 서적");
 
-        // EMP00005 - 2개월 전 데이터
+        // 20250005 - 2개월 전 데이터
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 18000, "식비", now.minusDays(56), "팀 회의");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 75000, "비품", now.minusDays(50), "마케팅 용품");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 9000, "기타", now.minusDays(46), "간식 구매");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 48000, "비품", now.minusDays(40), "마케팅 도서");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 16000, "식비", now.minusDays(36), "팀 회의");
 
-        // EMP00005 - 1개월 전 데이터
+        // 20250005 - 1개월 전 데이터
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 62000, "비품", now.minusDays(33), "마케팅 자료");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "맥도날드 역삼점", 13000, "식비", now.minusDays(29), "점심 식사");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 7000, "기타", now.minusDays(26), "음료 구매");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 24000, "식비", now.minusDays(21), "팀 회의");
         createExpense(user3, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 36000, "비품", now.minusDays(17), "마케팅 도서");
 
-        // EMP00007 - 2개월 전 데이터
+        // 20250007 - 2개월 전 데이터
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 14000, "식비", now.minusDays(54), "코드 리뷰 미팅");
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 38000, "비품", now.minusDays(48), "개발 도구");
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 6500, "기타", now.minusDays(44), "음료 구매");
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "교보문고", 32000, "비품", now.minusDays(38), "기술 서적");
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "스타벅스 강남점", 17000, "식비", now.minusDays(34), "코드 리뷰 미팅");
 
-        // EMP00007 - 1개월 전 데이터
+        // 20250007 - 1개월 전 데이터
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "이마트", 48000, "비품", now.minusDays(31), "개발 도구");
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "맥도날드 역삼점", 11000, "식비", now.minusDays(28), "점심 식사");
         createExpense(user4, pastStatuses[random.nextInt(pastStatuses.length)], "GS25 편의점", 5500, "기타", now.minusDays(25), "간식 구매");
@@ -758,13 +758,8 @@ public class ExpenseRepositoryTests {
         // ✅ 상신일(createdAt)을 receiptDate와 비슷한 시점으로 설정
         // Native Query로 직접 DB 업데이트하여 @CreationTimestamp/@UpdateTimestamp 우회
         // 상신일은 보통 지출일자와 같거나 약간 늦음 (같은 날 오전 9시~오후 5시 사이)
-        // ⚠️ 오늘 날짜는 제외: receiptDate가 오늘이면 어제 날짜로 변경
-        LocalDate dateForCreatedAt = receiptDate;
-        if (receiptDate.equals(LocalDate.now())) {
-            dateForCreatedAt = receiptDate.minusDays(1);
-        }
         Random random = new Random();
-        LocalDateTime createdAt = dateForCreatedAt.atStartOfDay()
+        LocalDateTime createdAt = receiptDate.atStartOfDay()
                 .plusHours(9 + random.nextInt(8)); // 오전 9시~오후 5시 사이
         
         // Native Query로 직접 UPDATE (테스트 코드에서만 사용)
@@ -792,9 +787,9 @@ public class ExpenseRepositoryTests {
      */
     private void createApprovalHistory(Expense expense, LocalDateTime createdAt, ApprovalStatus status, Random random) {
         // 관리자 조회 (approver로 사용)
-        User admin = userRepository.findByEmployeeNo("EMP00002")
+        User admin = userRepository.findByEmployeeNo("20250002")
                 .orElseGet(() -> {
-                    // EMP00002가 없으면 첫 번째 관리자 찾기
+                    // 20250002가 없으면 첫 번째 관리자 찾기
                     return userRepository.findAll().stream()
                             .filter(User::isAdmin)
                             .findFirst()

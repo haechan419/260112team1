@@ -88,76 +88,63 @@
   color: #1e293b;
 }
 
-/* ===== [수정됨] 출결현황 카드 (Progress Bar 스타일) ===== */
+/* ===== 출결현황 카드 ===== */
 .chart-card {
-  padding: 24px;
+  padding: 20px 24px;
 }
 
 .chart-card .section-title {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .chart-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .chart-row {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
 }
 
-/* 1. 라벨 */
-.chart-label {
-  width: 40px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #64748b;
-  flex-shrink: 0;
-}
-
-/* 2. 막대 배경 (트랙) - 남은 공간 차지 */
-.chart-track {
-  flex: 1;
-  height: 12px;
-  background-color: #f1f5f9;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-/* 3. 실제 색상 막대 */
 .chart-indicator {
-  height: 100%;
-  border-radius: 6px;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 4px; /* 최소 너비 */
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .chart-indicator.present {
   background: #22c55e;
 }
+
 .chart-indicator.late {
   background: #f59e0b;
 }
+
 .chart-indicator.absent {
   background: #ef4444;
 }
+
 .chart-indicator.leave {
   background: #3b82f6;
 }
 
-/* 4. 횟수 값 */
+.chart-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
 .chart-value {
-  width: 40px;
-  text-align: right;
   font-size: 14px;
   font-weight: 700;
   color: #1e293b;
-  flex-shrink: 0;
+  min-width: 40px;
+  text-align: right;
 }
 
 /* ===== 출퇴근 버튼 ===== */

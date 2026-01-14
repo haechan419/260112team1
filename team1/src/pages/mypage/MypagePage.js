@@ -25,36 +25,34 @@ const MypagePage = () => {
   const [viewYear, setViewYear] = useState(new Date().getFullYear());
   const [viewMonth, setViewMonth] = useState(new Date().getMonth() + 1);
 
-  const { loginState } = useCustomLogin();
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [isFaceLoading, setIsFaceLoading] = useState(true);
+  const { loginState } = useCustomLogin(); // 현재 로그인한 사번 가져오기 위함
+  const [isRegistered, setIsRegistered] = useState(false); // 얼굴 등록 여부
+  const [isFaceLoading, setIsFaceLoading] = useState(true); // 얼굴 상태 로딩
 
-  // [수정 1] 오늘 날짜 계산 (로컬 시간 기준)
-  // toISOString()을 쓰면 시차 때문에 날짜가 달라질 수 있으므로 직접 포맷팅합니다.
   const today = new Date();
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth() + 1;
-  const todayStr = `${todayYear}-${String(todayMonth).padStart(
-    2,
-    "0"
-  )}-${String(today.getDate()).padStart(2, "0")}`;
+  const todayStr = today.toISOString().split("T")[0];
 
+  // 초기 데이터 로드 (내정보 + 출결)
   useEffect(() => {
     loadInitialData();
   }, []);
 
+  // Face ID 등록 여부 확인
   useEffect(() => {
     if (loginState.employeeNo) {
       checkFaceStatus();
     }
   }, [loginState.employeeNo]);
 
+  // --- Face ID 상태 확인 함수 ---
   const checkFaceStatus = async () => {
     try {
       const res = await axios.get(`${API_SERVER_HOST}/api/face/check`, {
         params: { userId: loginState.employeeNo },
       });
-      setIsRegistered(res.data);
+      setIsRegistered(res.data); // true or false
     } catch (error) {
       console.error("Face ID 상태 확인 실패:", error);
     } finally {
@@ -62,6 +60,7 @@ const MypagePage = () => {
     }
   };
 
+  // ---얼굴 데이터 삭제 함수 ---
   const handleDeleteFace = async () => {
     if (
       !window.confirm(
@@ -78,7 +77,7 @@ const MypagePage = () => {
 
       if (res.data.result === "success") {
         alert("삭제되었습니다.");
-        setIsRegistered(false);
+        setIsRegistered(false); // 상태 변경 -> 등록 화면으로 전환
       }
     } catch (error) {
       console.error("삭제 실패:", error);
@@ -86,9 +85,10 @@ const MypagePage = () => {
     }
   };
 
+  // --- 등록 성공 시 실행될 콜백 ---
   const onRegisterSuccess = () => {
     alert("얼굴 등록이 완료되었습니다!");
-    setIsRegistered(true);
+    setIsRegistered(true); // 상태 변경 -> 삭제 버튼 화면으로 전환
   };
 
   const loadInitialData = async () => {
@@ -172,23 +172,8 @@ const MypagePage = () => {
 
   const summary = calculateSummary(attendance);
 
-  const calculateWidth = (count) => {
-    const total = attendance.length > 0 ? attendance.length : 1;
-    const percentage = Math.round((count / total) * 100);
-    return `${percentage}%`;
-  };
-
-  // [수정 2] 달력 타일 날짜 비교 로직 (핵심 수정)
   const tileClassName = ({ date }) => {
-    // 1. 달력의 날짜(date)는 00시 00분 기준입니다.
-    // 2. toISOString()을 쓰면 한국시간 9시간 차이로 인해 '전날' 날짜가 나옵니다.
-    // 3. 따라서 getFullYear/Month/Date를 이용해 로컬 시간 기준으로 문자열을 만들어야 합니다.
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const dateStr = `${year}-${month}-${day}`;
-
-    // 데이터베이스의 날짜(YYYY-MM-DD)와 정확히 1:1 매칭
+    const dateStr = date.toISOString().split("T")[0];
     const record = attendance.find((a) => a.date === dateStr);
     if (!record) return null;
     return record.status.toLowerCase();
@@ -209,8 +194,9 @@ const MypagePage = () => {
         <h1 className="page-title">마이페이지</h1>
 
         <div className="mypage-content">
-          {/* ================= 왼쪽 컬럼 ================= */}
+          {/* 왼쪽 컬럼 */}
           <div className="mypage-left">
+            {/* 내정보 카드*/}
             <div className="panel info-card">
               <div className="section-title">내정보</div>
               <div className="info-grid">
@@ -241,8 +227,55 @@ const MypagePage = () => {
               </div>
             </div>
 
-            <div className="panel face-card">
+            {/* 출결현황 그래프 */}
+            <div className="panel chart-card">
+              <div className="section-title">출결 현황 ({viewMonth}월)</div>
+              <div className="chart-container">
+                <div className="chart-row">
+                  <div className="chart-indicator present"></div>
+                  <span className="chart-label">출근</span>
+                  <span className="chart-value">{summary.present}회</span>
+                </div>
+                <div className="chart-row">
+                  <div className="chart-indicator late"></div>
+                  <span className="chart-label">지각</span>
+                  <span className="chart-value">{summary.late}회</span>
+                </div>
+                <div className="chart-row">
+                  <div className="chart-indicator absent"></div>
+                  <span className="chart-label">결근</span>
+                  <span className="chart-value">{summary.absent}회</span>
+                </div>
+                <div className="chart-row">
+                  <div className="chart-indicator leave"></div>
+                  <span className="chart-label">휴가</span>
+                  <span className="chart-value">{summary.leave}회</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. 출퇴근 버튼 (기존 유지) */}
+            <div className="check-buttons">
+              <button
+                className="check-btn check-in"
+                onClick={handleCheckIn}
+                disabled={!canCheckIn}
+              >
+                출근하기
+              </button>
+              <button
+                className="check-btn check-out"
+                onClick={handleCheckOut}
+                disabled={!canCheckOut}
+              >
+                퇴근하기
+              </button>
+            </div>
+
+            {/* Face ID 등록/관리 카드 */}
+            <div className="panel face-card" style={{ marginTop: "20px" }}>
               <div className="section-title">🔐 보안 설정 (Face ID)</div>
+
               {isFaceLoading ? (
                 <div
                   style={{
@@ -255,7 +288,9 @@ const MypagePage = () => {
                 </div>
               ) : (
                 <>
+                  {/* 등록 여부에 따라 다른 화면 송출 */}
                   {isRegistered ? (
+                    // 등록된 경우: 확인 메시지 + 삭제 버튼
                     <div style={{ textAlign: "center", padding: "10px" }}>
                       <div
                         style={{
@@ -294,6 +329,7 @@ const MypagePage = () => {
                       </button>
                     </div>
                   ) : (
+                    // 미등록 경우: 등록 컴포넌트(카메라) 표시
                     <FaceRegister onSuccess={onRegisterSuccess} />
                   )}
                 </>
@@ -301,7 +337,7 @@ const MypagePage = () => {
             </div>
           </div>
 
-          {/* ================= 오른쪽 컬럼 ================= */}
+          {/* 오른쪽: 달력 (기존 유지) */}
           <div className="mypage-right">
             <div className="panel calendar-card">
               <div className="section-title">
@@ -333,77 +369,6 @@ const MypagePage = () => {
                   <span>휴가</span>
                 </div>
               </div>
-            </div>
-
-            {/* 출결 현황 그래프 (Progress Bar 형태) */}
-            <div className="panel chart-card">
-              <div className="section-title">출결 현황 ({viewMonth}월)</div>
-              <div className="chart-container">
-                {/* 출근 */}
-                <div className="chart-row">
-                  <span className="chart-label">출근</span>
-                  <div className="chart-track">
-                    <div
-                      className="chart-indicator present"
-                      style={{ width: calculateWidth(summary.present) }}
-                    ></div>
-                  </div>
-                  <span className="chart-value">{summary.present}회</span>
-                </div>
-
-                {/* 지각 */}
-                <div className="chart-row">
-                  <span className="chart-label">지각</span>
-                  <div className="chart-track">
-                    <div
-                      className="chart-indicator late"
-                      style={{ width: calculateWidth(summary.late) }}
-                    ></div>
-                  </div>
-                  <span className="chart-value">{summary.late}회</span>
-                </div>
-
-                {/* 결근 */}
-                <div className="chart-row">
-                  <span className="chart-label">결근</span>
-                  <div className="chart-track">
-                    <div
-                      className="chart-indicator absent"
-                      style={{ width: calculateWidth(summary.absent) }}
-                    ></div>
-                  </div>
-                  <span className="chart-value">{summary.absent}회</span>
-                </div>
-
-                {/* 휴가 */}
-                <div className="chart-row">
-                  <span className="chart-label">휴가</span>
-                  <div className="chart-track">
-                    <div
-                      className="chart-indicator leave"
-                      style={{ width: calculateWidth(summary.leave) }}
-                    ></div>
-                  </div>
-                  <span className="chart-value">{summary.leave}회</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="check-buttons">
-              <button
-                className="check-btn check-in"
-                onClick={handleCheckIn}
-                disabled={!canCheckIn}
-              >
-                출근하기
-              </button>
-              <button
-                className="check-btn check-out"
-                onClick={handleCheckOut}
-                disabled={!canCheckOut}
-              >
-                퇴근하기
-              </button>
             </div>
           </div>
         </div>
