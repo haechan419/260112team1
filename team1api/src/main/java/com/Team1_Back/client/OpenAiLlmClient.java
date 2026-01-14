@@ -7,6 +7,7 @@ import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,21 @@ public class OpenAiLlmClient {
     @Value("${openai.api.key}")
     private String apiKey;
 
-    @Value("${openai.model:gpt-4.1-nano}")
+    // ✅ chat/completions에서 안정적인 모델로 시작 추천
+    @Value("${openai.model:gpt-4o-mini}")
     private String model;
 
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .callTimeout(Duration.ofSeconds(30))
+            .build();
+
     private final ObjectMapper mapper = new ObjectMapper();
+
+    public LlmResult chat(String prompt) {
+        return ask(prompt);
+    }
 
     public LlmResult ask(String prompt) {
         try {
@@ -33,7 +42,7 @@ public class OpenAiLlmClient {
               "messages": [
                 {
                   "role": "system",
-                  "content": "You are a helpful assistant that returns ONLY valid JSON."
+                  "content": "You are a helpful assistant that returns ONLY valid JSON. Do not wrap in markdown."
                 },
                 {
                   "role": "user",
@@ -57,25 +66,30 @@ public class OpenAiLlmClient {
                 String raw = response.body() != null ? response.body().string() : "";
 
                 if (!response.isSuccessful()) {
-                    throw new RuntimeException("OpenAI API error: " + response.code() + " " + raw);
+                    // ✅ 여기서 raw가 제일 중요함 (400/401/429 원인)
+                    throw new RuntimeException("OpenAI API error: " + response.code() + " body=" + raw);
                 }
 
-                String text = mapper.readTree(raw)
-                        .path("choices").get(0)
-                        .path("message")
-                        .path("content")
-                        .asText();
+                JsonNode root = mapper.readTree(raw);
+
+                // ✅ NPE 방지: path(0) 사용
+                JsonNode choice0 = root.path("choices").path(0);
+                String text = choice0.path("message").path("content").asText(null);
+
+                if (text == null) {
+                    throw new RuntimeException("OpenAI response missing choices[0].message.content: " + raw);
+                }
 
                 return parseJson(text);
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("OpenAI 호출 실패", e);
+            // ✅ 원인 메시지 유지
+            throw new RuntimeException("OpenAI 호출 실패: " + e.getMessage(), e);
         }
     }
 
     private LlmResult parseJson(String text) throws Exception {
-        // ```json 제거
         String cleaned = text
                 .replaceAll("(?s)```json\\s*", "")
                 .replaceAll("(?s)```\\s*", "")
@@ -88,11 +102,31 @@ public class OpenAiLlmClient {
         JsonNode node = mapper.readTree(cleaned);
 
         String summary = node.path("summary").asText("");
+
         List<Long> ids = new ArrayList<>();
-        for (JsonNode idNode : node.path("messageIds")) {
-            ids.add(idNode.asLong());
+        JsonNode idArr = node.path("attachmentIds");
+
+        // ✅ attachmentIds가 문자열/숫자 단일로 와도 처리
+        if (idArr.isArray()) {
+            for (JsonNode idNode : idArr) {
+                if (idNode == null || idNode.isNull()) continue;
+                if (idNode.isNumber()) ids.add(idNode.asLong());
+                else {
+                    String sId = idNode.asText("").trim();
+                    if (!sId.isEmpty()) {
+                        try { ids.add(Long.parseLong(sId)); } catch (NumberFormatException ignore) {}
+                    }
+                }
+            }
+        } else if (idArr.isNumber()) {
+            ids.add(idArr.asLong());
+        } else if (idArr.isTextual()) {
+            String sId = idArr.asText("").trim();
+            if (!sId.isEmpty()) {
+                try { ids.add(Long.parseLong(sId)); } catch (NumberFormatException ignore) {}
+            }
         }
 
-        return new LlmResult(summary, ids);
+        return new LlmResult(summary, List.of(), ids);
     }
 }

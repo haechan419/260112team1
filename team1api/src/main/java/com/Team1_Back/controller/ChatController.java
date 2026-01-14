@@ -4,7 +4,10 @@ import com.Team1_Back.dto.ChatRoomMetaResponse;
 import com.Team1_Back.service.ChatService;
 import com.Team1_Back.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/chat")

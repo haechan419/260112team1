@@ -1,9 +1,12 @@
 package com.Team1_Back.dto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.util.List;
 
+@Builder
 @Getter
 @AllArgsConstructor
 public class ChatMessageResponse {
@@ -12,4 +15,5 @@ public class ChatMessageResponse {
     private Long senderId;
     private String content;
     private Instant createdAt;
+    private List<ChatAttachmentDto> attachments;
 }

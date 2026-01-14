@@ -1,10 +1,10 @@
 package com.Team1_Back.service;
 
+import com.Team1_Back.domain.ChatAttachment;
+import com.Team1_Back.domain.ChatMessage;
 import com.Team1_Back.dto.ChatAttachmentDto;
 import com.Team1_Back.dto.ChatMessageBroadcastDto;
 import com.Team1_Back.dto.UploadMessageWithAttachmentsResponse;
-import com.Team1_Back.domain.ChatAttachment;
-import com.Team1_Back.domain.ChatMessage;
 import com.Team1_Back.repository.ChatAttachmentRepository;
 import com.Team1_Back.repository.ChatMessageRepository;
 import jakarta.transaction.Transactional;
@@ -16,9 +16,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -124,7 +130,7 @@ public class ChatAttachmentService {
                         .originalName(originalName)
                         .mimeType(mimeType)
                         .size(size)
-                        .url(att.getFileUrl())
+//                        .url(att.getFileUrl())
                         .build());
             }
         }

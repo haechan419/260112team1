@@ -28,7 +28,10 @@ public class ChatRoomController {
     @PostMapping("/rooms/dm")
     public Map<String, Object> createDm(@RequestBody CreateDmRequest req) {
         Long meId = CurrentUser.id();
-        Long roomId = chatRoomCommandService.createDm(meId, req.getTargetUserId());
+
+        // ✅ 무조건 이 로직으로 통일 (멤버 insert 보장)
+        Long roomId = chatService.getOrCreateDirectRoom(meId, req.getTargetUserId());
+
         return Map.of("roomId", roomId);
     }
 
@@ -71,6 +74,16 @@ public class ChatRoomController {
         chatRoomCommandService.leaveRoom(meId, roomId);
         return Map.of("success", true);
     }
+
+//    @GetMapping("/rooms/{roomId}/messages")
+//    public List<ChatMessageResponse> getMessages(
+//            @PathVariable Long roomId,
+//            @RequestParam(defaultValue = "30") int limit
+//    ) {
+//        Long meId = CurrentUser.id();
+//        return chatService.getMessages(roomId, meId, limit);
+//    }
+
 
 
 }
