@@ -38,6 +38,14 @@ body {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1000;
+}
+
+/* 모바일에서 Sidebar 오버레이로 표시 */
+.sidebar-overlay {
+  display: none;
 }
 
 .sidebar-logo {
@@ -135,6 +143,50 @@ body {
   gap: 12px;
 }
 
+/* 햄버거 메뉴 버튼 */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.hamburger-btn span {
+  width: 100%;
+  height: 3px;
+  background: #fff;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* 채팅 버튼 스타일 */
+.topIconBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  color: #fff;
+}
+
+.topIconBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
 .ai-topbar-btn {
   width: 40px;
   height: 40px;
@@ -230,6 +282,19 @@ body {
 
   /* 🚨 여기가 핵심입니다! 내용물에 숨통을 트여주는 여백 */
   padding: 40px;
+}
+
+/* 반응형: 모바일 패딩 조정 */
+@media (max-width: 768px) {
+  .app-content {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 16px 12px;
+  }
 }
 
 /* ================= Dashboard Styles (여기에 통합) ================= */
@@ -346,6 +411,29 @@ body {
   color: #0f172a;
 }
 
+/* 반응형: 페이지 제목 */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .page-meta {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .page-meta {
+    font-size: 10px;
+  }
+}
+
 .chatRoomsPopover{
     position: absolute;
     top: 42px;
@@ -377,9 +465,206 @@ body {
 }
 
 
-/* 반응형 (화면 작아지면 세로로) */
-@media (max-width: 1200px) {
-  .dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
-  } /* 2열로 변경 */
+/* ================= Topbar & Sidebar 반응형 ================= */
+
+/* 태블릿 (992px 이하) */
+@media (max-width: 992px) {
+  .topbar {
+    padding: 0 20px;
+  }
+
+  .user-info {
+    display: none; /* 사용자 정보 숨김 */
+  }
+
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 모바일 (768px 이하) */
+@media (max-width: 768px) {
+  /* 햄버거 메뉴 표시 */
+  .hamburger-btn {
+    display: flex;
+  }
+
+  /* Sidebar 숨김 (오버레이로만 표시) */
+  .app-root {
+    position: relative;
+  }
+
+  .app-main {
+    width: 100%;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1001;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Topbar 조정 */
+  .topbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .topbar-left {
+    gap: 8px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .ai-topbar-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .user-profile {
+    gap: 6px;
+  }
+
+  .avatar-circle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .user-info {
+    display: none; /* 모바일에서 사용자 정보 숨김 */
+  }
+
+  .user-name,
+  .user-dept {
+    display: none;
+  }
+
+  .logout-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 16px;
+  }
+
+  .topIconBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  /* Sidebar 로고 조정 */
+  .sidebar-logo {
+    font-size: 14px;
+    height: 60px;
+  }
+
+  /* Sidebar 네비게이션 조정 */
+  .sidebar-nav {
+    padding-top: 16px;
+    gap: 8px;
+  }
+
+  .nav-item {
+    height: 44px;
+    padding-left: 20px;
+    font-size: 14px;
+  }
+
+  .nav-label {
+    font-size: 11px;
+    padding-left: 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+}
+
+/* 작은 모바일 (480px 이하) */
+@media (max-width: 480px) {
+  .topbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .hamburger-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hamburger-btn span {
+    height: 2.5px;
+  }
+
+  .ai-topbar-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .avatar-circle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .logout-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .topIconBtn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .sidebar {
+    width: 220px;
+  }
+
+  .sidebar-logo {
+    font-size: 13px;
+    height: 56px;
+  }
+
+  .nav-item {
+    height: 40px;
+    padding-left: 16px;
+    font-size: 13px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    padding-left: 16px;
+  }
 }

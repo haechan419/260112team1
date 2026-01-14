@@ -98,3 +98,148 @@
     font-weight: 600;
     border-bottom: 1px solid #f9f9f9;
 }
+
+/* ================= 반응형 디자인 ================= */
+
+/* 태블릿 (1200px 이하) */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .stat-card {
+        height: 140px;
+        padding: 20px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .stat-title {
+        font-size: 13px;
+    }
+
+    .stat-footer {
+        font-size: 12px;
+    }
+
+    .dashboard-row {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        padding: 20px;
+    }
+}
+
+/* 태블릿 (992px 이하) */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        gap: 16px;
+    }
+
+    .stat-card {
+        height: 130px;
+        padding: 18px;
+    }
+
+    .stat-value {
+        font-size: 26px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+}
+
+/* 모바일 (768px 이하) */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        height: 120px;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .stat-title {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .stat-footer {
+        font-size: 11px;
+    }
+
+    .panel {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .dashboard-row {
+        gap: 16px;
+    }
+}
+
+/* 작은 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .stat-card {
+        height: auto;
+        min-height: 100px;
+        padding: 14px;
+    }
+
+    .stat-title {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .stat-footer {
+        font-size: 10px;
+        margin-top: 8px;
+    }
+
+    .panel {
+        padding: 14px;
+        border-radius: 10px;
+    }
+
+    .section-title {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-table th {
+        font-size: 11px;
+    }
+
+    .dashboard-table td {
+        font-size: 12px;
+        padding: 10px 0;
+    }
+}

@@ -145,14 +145,13 @@
 
 .todo-count-indicator {
     position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 4px;
+    right: 4px;
     background: #ef4444;
     color: white;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
